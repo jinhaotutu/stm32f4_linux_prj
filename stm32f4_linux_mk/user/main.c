@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    main.c 
+  * @file    main.c
   * @author  jinhao
   * @version V1.0.0
   * @date    22-April-2016
@@ -16,29 +16,29 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
   ******************************************************************************
   */
-  
+
 /* Includes -------------------------------------------------------------------*/
 #include <stdio.h>
 #include <string.h>
-//  #include "stm32f4xx.h"
-//  #include "sys_cfg.h"
-//  #include "sys_delay.h"
+#include "stm32f4xx.h"
+#include "sys_cfg.h"
+#include "sys_delay.h"
 
 /* Defines --------------------------------------------------------------------*/
 
 
 /* Variables ------------------------------------------------------------------*/
 
-                
-/* Functions ------------------------------------------------------------------*/			
+
+/* Functions ------------------------------------------------------------------*/
 
 
 
@@ -50,17 +50,17 @@
 int main(void)
 {
     /* stm32系统配置 */
-    //  Sys_Config();
+    Sys_Config();
 
     while(1)
     {
-        //  LED3_ON;
-        //  LED4_OFF;
-        //  delay_ms(500);
+        LED3_ON;
+        LED4_OFF;
+        delay_ms(500);
 
-        //  LED3_OFF;
-        //  LED4_ON;
-        //  delay_ms(500);
+        LED3_OFF;
+        LED4_ON;
+        delay_ms(500);
     }
 }
 

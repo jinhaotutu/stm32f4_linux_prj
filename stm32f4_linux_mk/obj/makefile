@@ -40,22 +40,22 @@ all: stm32f4-mk.bin stm32f4-mk.elf secondary-outputs
 
 # Tool invocations
 stm32f4-mk.bin: $(OBJS) $(USER_OBJS) ./STM32F407ZGTX_FLASH.ld
-	arm-none-eabi-gcc -o "stm32f4-mk.bin" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	$(CC_DIR)/arm-none-eabi-gcc -o "stm32f4-mk.bin" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 stm32f4-mk.elf: $(OBJS) $(USER_OBJS) ./STM32F407ZGTX_FLASH.ld
-	arm-none-eabi-gcc -o "stm32f4-mk.elf" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	$(CC_DIR)/arm-none-eabi-gcc -o "stm32f4-mk.elf" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 default.size.stdout: $(EXECUTABLES)
-	arm-none-eabi-size  $(EXECUTABLES)
+	$(CC_DIR)/arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
 stm32f4-mk.list: $(EXECUTABLES)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "stm32f4-mk.list"
+	$(CC_DIR)/arm-none-eabi-objdump -h -S $(EXECUTABLES) > "stm32f4-mk.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 

@@ -14,12 +14,9 @@ EXECUTABLES :=
 OBJS := 
 C_DEPS := 
 OBJCOPY_BIN := 
+INC := 
+CC_DIR := ./tools/gcc-arm-none-eabi-4_9-2015q3/bin
 
 # Every subdirectory with source files must be described here
-SUBDIRS := \
-Startup \
-fwlib/src \
-misis \
-sys \
-user \
+SUBDIRS := 
 
