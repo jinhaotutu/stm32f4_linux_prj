@@ -22,6 +22,8 @@ OBJS += $(patsubst %.s, ./output/%.o, $(notdir ${S_SRCS}))
 # OBJS += $(S_SRCS:%.s=%.d)
 # C_DEPS += $(patsubst %.o, ./output/%.d, $(notdir ${OBJS}))
 
+$(shell echo $(OBJS) > objects.list)
+
 # Each subdirectory must supply rules for building sources it contributes
 ./output/%.o: $(C_SRCS) $(S_SRCS)
 	@echo 'Start building'
