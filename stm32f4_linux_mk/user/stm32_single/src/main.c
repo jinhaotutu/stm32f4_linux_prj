@@ -55,11 +55,9 @@ int main(void)
     while(1)
     {
         LED3_ON;
-        LED4_OFF;
         delay_ms(500);
 
         LED3_OFF;
-        LED4_ON;
         delay_ms(500);
     }
 }

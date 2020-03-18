@@ -11,7 +11,6 @@ RM := rm -rf
 -include subdir.mk
 -include objects.mk
 
-#arm-none-eabi-gcc -o "stm32f4-mk.bin" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 
 ifneq ($(MAKECMDGOALS),clean)
 ifneq ($(strip $(C_DEPS)),)
