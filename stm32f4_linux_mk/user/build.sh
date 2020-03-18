@@ -42,7 +42,7 @@ if [ $3 = "clean" ] ;then
     exit 0
 fi
 
-make all -j4
+make -j4 all
 
 cp stm32f4-mk.bin  ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.bin
 cp stm32f4-mk.elf  ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.elf
