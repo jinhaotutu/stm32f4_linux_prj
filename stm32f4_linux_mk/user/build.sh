@@ -27,11 +27,11 @@ export APP_VER
 
 echo "start stm32 linux project:[$APP_NAME""_app_v$APP_VER]"
 
-if [ -d "./$APP_NAME/output" ] ;then
-    rm -rf ./$APP_NAME/output
-    mkdir ../user/$APP_NAME/output
+if [ -d "./$APP_NAME/output/$APP_VER" ] ;then
+    rm -rf ./$APP_NAME/output/$APP_VER
+    mkdir ../user/$APP_NAME/output/$APP_VER
 else
-    mkdir ../user/$APP_NAME/output
+    mkdir ../user/$APP_NAME/output/$APP_VER
 fi
 
 cd ../obj
@@ -44,10 +44,10 @@ fi
 
 make -j4 all
 
-cp stm32f4-mk.bin  ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.bin
-cp stm32f4-mk.elf  ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.elf
-cp stm32f4-mk.list ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.list
-cp stm32f4-mk.map  ../user/$APP_NAME/output/$APP_NAME"_app_v"$APP_VER.map
+cp stm32f4-mk.bin  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.bin
+cp stm32f4-mk.elf  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.elf
+cp stm32f4-mk.list ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.list
+cp stm32f4-mk.map  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.map
 
 echo ""
 echo "*******************************************************************"

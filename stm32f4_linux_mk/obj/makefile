@@ -38,10 +38,10 @@ stm32f4-mk.bin \
 all: stm32f4-mk.bin stm32f4-mk.elf secondary-outputs
 
 # Tool invocations
-stm32f4-mk.bin: $(OBJS) $(USER_OBJS) ./STM32F407ZGTX_FLASH.ld
-	$(CC_DIR)/arm-none-eabi-gcc -o "stm32f4-mk.bin" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-	@echo 'Finished building target: $@'
-	@echo ' '
+# stm32f4-mk.bin: $(OBJS) $(USER_OBJS) ./STM32F407ZGTX_FLASH.ld
+# 	$(CC_DIR)/arm-none-eabi-gcc -o "stm32f4-mk.bin" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+# 	@echo 'Finished building target: $@'
+# 	@echo ' '
 
 stm32f4-mk.elf: $(OBJS) $(USER_OBJS) ./STM32F407ZGTX_FLASH.ld
 	$(CC_DIR)/arm-none-eabi-gcc -o "stm32f4-mk.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"./STM32F407ZGTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f4-mk.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -58,10 +58,10 @@ stm32f4-mk.list: $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-# stm32f4-mk.bin: $(EXECUTABLES)
-# 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "stm32f4-mk.bin"
-# 	@echo 'Finished building: $@'
-# 	@echo ' '
+stm32f4-mk.bin: $(EXECUTABLES)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "stm32f4-mk.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
 
 # Other Targets
 clean:
