@@ -53,7 +53,7 @@ stm32f4-mk.list: $(EXECUTABLES)
 	@echo ' '
 
 stm32f4-mk.bin: $(EXECUTABLES)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "stm32f4-mk.bin"
+	$(CC_DIR)/arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "stm32f4-mk.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
