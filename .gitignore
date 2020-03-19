@@ -51,7 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-.vscode
 stm32f4_linux_mk/obj/tools/gcc-arm-none-eabi-4_9-2015q3/
 *.list
 *.bin

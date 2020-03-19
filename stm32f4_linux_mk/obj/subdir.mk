@@ -18,11 +18,6 @@ INC += -I../user/${APP_NAME}/inc
 
 OBJS += $(patsubst %.c, ./output/%.o, $(notdir ${C_SRCS}))
 OBJS += $(patsubst %.s, ./output/%.o, $(notdir ${S_SRCS}))
-# OBJS += $(C_SRCS:%.o=%.d)
-# OBJS += $(S_SRCS:%.s=%.d)
-# C_DEPS += $(patsubst %.o, ./output/%.d, $(notdir ${OBJS}))
-
-$(shell echo $(OBJS) > objects.list)
 
 # Each subdirectory must supply rules for building sources it contributes
 ./output/%.o: $(C_SRCS) $(S_SRCS)

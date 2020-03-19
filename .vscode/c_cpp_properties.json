@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "stm32f4",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/sys",
+                "${workspaceFolder}/misis",
+                "${workspaceFolder}/fwlib/inc"
+            ],
+            "defines": [
+                "STM32",
+                "STM32F4",
+                "DEBUG",
+                "STM32F407ZGTx",
+                "STM32F40_41xxx",
+                "USE_STDPERIPH_DRIVER",
+                "__GNUC__"
+            ],
+            "compilerPath": "${workspaceFolder}/obj/tools/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-gcc",
+            "cStandard": "c99",
+            "cppStandard": "c",
+            "intelliSenseMode": "arm-linux"
+        }
+    ],
+    "version": 4
+}
