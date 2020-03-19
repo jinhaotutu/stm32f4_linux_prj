@@ -49,6 +49,15 @@ cp stm32f4-mk.elf  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.e
 cp stm32f4-mk.list ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.list
 cp stm32f4-mk.map  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.map
 
+cd -
+
+if [ $3 = "fileload" ] ;then
+    sh load.sh ./$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.bin
+else
+    echo ""
+    echo "only compile, not download"
+fi
+
 echo ""
 echo "*******************************************************************"
 echo " $APP_NAME""_app_v$APP_VER"

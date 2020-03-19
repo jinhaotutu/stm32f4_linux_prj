@@ -1,0 +1,4 @@
+h
+loadbin ./stm32_single/output/1.0.0/stm32_single_app_v1.0.0.bin 0x08000000
+g
+qc
