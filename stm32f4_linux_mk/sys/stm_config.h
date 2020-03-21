@@ -3,6 +3,8 @@
 #define  STM32_CONFIG_H
 
 /* Includes -------------------------------------------------------------------*/
+#include <stdio.h>
+#include <string.h>
 #include "stm32f4xx.h"
 #include "sys_cfg.h"
 #include "sys_delay.h"
