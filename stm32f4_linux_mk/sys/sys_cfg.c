@@ -26,9 +26,9 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx.h"
+#include "stm_config.h"
 #include "sys_delay.h"
-#include <stdio.h>
+
 
 /* Defines --------------------------------------------------------------------*/
 
@@ -167,6 +167,24 @@ static void USART_Configuration(void)
     USART_Cmd(USART1,ENABLE);
 }
 
+static void easy_logger_init(void)
+{
+    printf("\r\n\r\n");
+    /* initialize EasyLogger */
+    elog_init();
+    /* set EasyLogger log format */
+    elog_set_fmt(ELOG_LVL_ASSERT, ELOG_FMT_ALL);
+    elog_set_fmt(ELOG_LVL_ERROR, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
+    elog_set_fmt(ELOG_LVL_WARN, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
+    elog_set_fmt(ELOG_LVL_INFO, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
+    elog_set_fmt(ELOG_LVL_DEBUG, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
+    elog_set_fmt(ELOG_LVL_VERBOSE, ELOG_FMT_ALL);
+    /* start EasyLogger */
+    elog_start();
+
+    // elog_set_filter();
+}
+
 /***
  * 函数名称 : Sys_Config();
  *
@@ -189,7 +207,10 @@ void Sys_Config(void)
 
     Delay_Configuration();
 
-    printf("\r\n\r\n***********STM32 System Config!***********\r\n\r\n");
+    /* third lib init */
+    easy_logger_init();
+
+    log_i("***********STM32 System Config!***********");
 }
 
 /* Private typedef -----------------------------------------------------------*/

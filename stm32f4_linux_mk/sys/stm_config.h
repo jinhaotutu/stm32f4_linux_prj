@@ -9,8 +9,13 @@
 #include "sys_cfg.h"
 #include "sys_delay.h"
 
-/* Defines --------------------------------------------------------------------*/
+/* third lib include */
+#include <elog.h>
 
+/* Defines --------------------------------------------------------------------*/
+#define __FILENAME__ (strrchr(__FILE__, '/') ? (strrchr(__FILE__, '/') + 1):__FILE__)
+#define os_printf(_fmt_, ...) \
+        printf("[log ] %s:%d | "_fmt_"\r\n", __FILENAME__, __LINE__, ##__VA_ARGS__)
 
 /* Types ----------------------------------------------------------------------*/
 

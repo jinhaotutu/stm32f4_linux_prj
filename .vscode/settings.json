@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "sys_cfg.h": "c"
+        "sys_cfg.h": "c",
+        "stm_config.h": "c",
+        "elog_cfg.h": "c",
+        "core_cmfunc.h": "c"
     }
 }

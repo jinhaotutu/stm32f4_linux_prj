@@ -3,18 +3,32 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+# sys
 C_SRCS += $(wildcard ../sys/*.c)
-C_SRCS += $(wildcard ../misis/*.c)
-C_SRCS += $(wildcard ../fwlib/src/*.c)
-S_SRCS += $(wildcard ../Startup/*.s)
-
-INC += -I../fwlib/inc
-INC += -I../misis
 INC += -I../sys
 
-#user include
+# misis
+C_SRCS += $(wildcard ../misis/*.c)
+INC += -I../misis
+
+# fwlib
+C_SRCS += $(wildcard ../fwlib/src/*.c)
+INC += -I../fwlib/inc
+
+# startup
+S_SRCS += $(wildcard ../Startup/*.s)
+
+# thirdlib ****
+# thirdlib easylogger
+C_SRCS += $(wildcard ../thirdlib/EasyLogger/easylogger/src/*.c)
+C_SRCS += $(wildcard ../thirdlib/EasyLogger/easylogger/port/*.c)
+INC += -I../thirdlib/EasyLogger/easylogger/inc
+
+
+#user
 C_SRCS += $(wildcard ../user/${APP_NAME}/src/*.c)
 INC += -I../user/${APP_NAME}/inc
+
 
 OBJS += $(patsubst %.c, ./output/%.o, $(notdir ${C_SRCS}))
 OBJS += $(patsubst %.s, ./output/%.o, $(notdir ${S_SRCS}))

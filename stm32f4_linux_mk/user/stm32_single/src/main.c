@@ -48,13 +48,17 @@ int main(void)
     /* stm32系统配置 */
     Sys_Config();
 
+    log_d("sys config finish");
+
     while(1)
     {
+        log_d("led on...");
         LED3_ON;
-        delay_ms(500);
+        delay_ms(2000);
 
+        log_d("led off...");
         LED3_OFF;
-        delay_ms(500);
+        delay_ms(2000);
     }
 }
 

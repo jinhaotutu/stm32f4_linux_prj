@@ -35,10 +35,10 @@ else
 fi
 
 cd ../obj
-# make clean
+make clean
 
 if [ $3 = "clean" ] ;then
-    make clean
+    # make clean
     echo "clean compile"
     exit 0
 fi
