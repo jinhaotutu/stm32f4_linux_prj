@@ -1,7 +1,7 @@
 ###
  # @Author: your name
  # @Date: 2020-03-19 23:49:31
- # @LastEditTime: 2020-03-20 00:17:04
+ # @LastEditTime: 2020-03-21 17:34:09
  # @LastEditors: Please set LastEditors
  # @Description: In User Settings Edit
  # @FilePath: /stm32f4_linux_prj/stm32f4_linux_mk/user/load.sh
@@ -20,6 +20,7 @@ if [ -e $1 ]; then
     echo "creat stm32f4-mk.jlink"
     echo "h" >> stm32f4-mk.jlink
     echo "loadbin" $1 "0x08000000" >> stm32f4-mk.jlink
+    echo "r" >> stm32f4-mk.jlink
     echo "g" >> stm32f4-mk.jlink
     echo "qc" >> stm32f4-mk.jlink
 

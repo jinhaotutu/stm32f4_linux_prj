@@ -35,9 +35,10 @@ else
 fi
 
 cd ../obj
-make clean
+# make clean
 
 if [ $3 = "clean" ] ;then
+    make clean
     echo "clean compile"
     exit 0
 fi
@@ -51,7 +52,7 @@ cp stm32f4-mk.map  ../user/$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.m
 
 cd -
 
-if [ $3 = "fileload" ] ;then
+if [ $3 = "loadbin" ] ;then
     sh load.sh ./$APP_NAME/output/$APP_VER/$APP_NAME"_app_v"$APP_VER.bin
 else
     echo ""

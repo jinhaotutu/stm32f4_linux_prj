@@ -5,7 +5,6 @@
 /* Includes -------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 
-
 /* Defines --------------------------------------------------------------------*/
 #define LED1_ON     GPIO_ResetBits(GPIOF,GPIO_Pin_9)
 #define LED1_OFF    GPIO_SetBits(GPIOF,GPIO_Pin_9)
