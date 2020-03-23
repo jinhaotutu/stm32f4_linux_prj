@@ -35,6 +35,11 @@ else
 fi
 
 cd ../obj
+
+if [ ! -d "./tools/gcc-arm-none-eabi-4_9-2015q3" ] ;then
+    tar -jvxf ./tools/gcc-arm-none-eabi-4_9-2015q3.tar.bz2 -C ./tools
+fi
+
 make clean
 
 if [ $3 = "clean" ] ;then
