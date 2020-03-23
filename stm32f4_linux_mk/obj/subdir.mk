@@ -26,10 +26,10 @@ INC += -I../thirdlib/EasyLogger/easylogger/inc
 
 # RTOS ****
 C_SRCS += $(wildcard ../thirdlib/RTOS/FreeRTOS/src/*.c)
-C_SRCS += $(wildcard ../thirdlib/RTOS/FreeRTOS/port/*.c)
+C_SRCS += $(wildcard ../thirdlib/RTOS/FreeRTOS/portable/*.c)
 INC += -I../thirdlib/RTOS/FreeRTOS
 INC += -I../thirdlib/RTOS/FreeRTOS/inc
-INC += -I../thirdlib/RTOS/FreeRTOS/port
+INC += -I../thirdlib/RTOS/FreeRTOS/portable
 
 #user
 C_SRCS += $(wildcard ../user/${APP_NAME}/src/*.c)
@@ -41,9 +41,9 @@ OBJS += $(patsubst %.s, ./output/%.o, $(notdir ${S_SRCS}))
 
 # Each subdirectory must supply rules for building sources it contributes
 ./output/%.o: $(C_SRCS) $(S_SRCS)
-	@echo 'Start building'
+	@echo 'Start building $(filter %/$(*F).c,$^) $(filter %/$(*F).s,$^)'
 	$(CC_DIR)/arm-none-eabi-gcc -mcpu=cortex-m4 -std=gnu11 -g3 -DSTM32 -DSTM32F4 -DDEBUG -DSTM32F407ZGTx \
-	-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -c $(filter %$(*F).c,$^) $(filter %$(*F).s,$^)\
+	-DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER -c $(filter %/$(*F).c,$^) $(filter %/$(*F).s,$^)\
 	$(INC) \
 	-O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP \
 	-MF"$(@:%.o=%.d)" \

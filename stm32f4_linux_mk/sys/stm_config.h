@@ -16,7 +16,7 @@
 #define os_printf(_fmt_, ...)   log_i(_fmt_, ##__VA_ARGS__)
 
 /* user system define */
-#define     USE_OS          0
+#define     USE_OS          1
 
 /* Types ----------------------------------------------------------------------*/
 
