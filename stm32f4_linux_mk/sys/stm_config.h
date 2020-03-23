@@ -13,9 +13,10 @@
 #include <elog.h>
 
 /* Defines --------------------------------------------------------------------*/
-#define __FILENAME__ (strrchr(__FILE__, '/') ? (strrchr(__FILE__, '/') + 1):__FILE__)
-#define os_printf(_fmt_, ...) \
-        printf("[log ] %s:%d | "_fmt_"\r\n", __FILENAME__, __LINE__, ##__VA_ARGS__)
+#define os_printf(_fmt_, ...)   log_i(_fmt_, ##__VA_ARGS__)
+
+/* user system define */
+#define     USE_OS          0
 
 /* Types ----------------------------------------------------------------------*/
 

@@ -24,6 +24,12 @@ C_SRCS += $(wildcard ../thirdlib/EasyLogger/easylogger/src/*.c)
 C_SRCS += $(wildcard ../thirdlib/EasyLogger/easylogger/port/*.c)
 INC += -I../thirdlib/EasyLogger/easylogger/inc
 
+# RTOS ****
+C_SRCS += $(wildcard ../thirdlib/RTOS/FreeRTOS/src/*.c)
+C_SRCS += $(wildcard ../thirdlib/RTOS/FreeRTOS/port/*.c)
+INC += -I../thirdlib/RTOS/FreeRTOS
+INC += -I../thirdlib/RTOS/FreeRTOS/inc
+INC += -I../thirdlib/RTOS/FreeRTOS/port
 
 #user
 C_SRCS += $(wildcard ../user/${APP_NAME}/src/*.c)
