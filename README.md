@@ -14,7 +14,7 @@ cd stm32f4_linux_prj/stm32f4_linux_mk/user/
 sh build.sh stm32_single 1.0.0  # 第二入参user目录下工程名、第三入参固件版本号
 
 # j-link烧写运行--生成bin文件在output文件下
-sh load.bin ./stm32_single/output/1.0.0/stm32_single_app_v1.0.0.bin #第二入参，烧录文件相对路径，使用jlink-swd下载
+sh load.sh ./stm32_single/output/1.0.0/stm32_single_app_v1.0.0.bin #第二入参，烧录文件相对路径，使用jlink-swd下载
 sh build.sh stm32_single 1.0.0 loadbin #加入第三入参loadbin，进行一键编译+烧写
 
 # 清除
