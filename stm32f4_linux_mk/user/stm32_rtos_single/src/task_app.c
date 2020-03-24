@@ -22,7 +22,7 @@
 /* Private macro -------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
-static TaskHandle_t task_demo = NULL;
+static TaskHandle_t task_led = NULL;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -35,17 +35,17 @@ static TaskHandle_t task_demo = NULL;
   * @param  None
   * @retval None
   */
-static void task_demo_cb(void *p)
+static void task_led_cb(void *p)
 {
     os_printf("%s", __FUNCTION__);
-    uint32_t cnt = 0x0fffffff;
 
     while(1){
-        os_printf("app task run");
+        log_d("led on...");
+        LED1_ON;
+        vTaskDelay(1000);
 
-        // while(cnt--);
-        // cnt = 0x0fffffff;
-
+        log_d("led off...");
+        LED1_OFF;
         vTaskDelay(1000);
     }
 }
@@ -64,12 +64,12 @@ int app_task_init(void)
     os_printf("app task creat");
 
     /* app task in this 创建rtos应用任务 */
-    xReturn = xTaskCreate(  (TaskFunction_t )task_demo_cb,
-                            (const char *   )"task_demo",
-                            (unsigned short )128,
+    xReturn = xTaskCreate(  (TaskFunction_t )task_led_cb,
+                            (const char *   )"task_led",
+                            (unsigned short )1024,
                             (void *         )NULL,
                             (UBaseType_t    )1,
-                            (TaskHandle_t * )&task_demo);
+                            (TaskHandle_t * )&task_led);
 
     if (pdPASS != xReturn){
         return -1;

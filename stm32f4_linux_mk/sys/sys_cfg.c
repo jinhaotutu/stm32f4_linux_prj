@@ -205,7 +205,9 @@ void Sys_Config(void)
 
     USART_Configuration();
 
-    Delay_Configuration();
+    // Delay_Configuration();
+
+    SysTick_Config(168-1);
 
     /* third lib init */
     easy_logger_init();

@@ -52,8 +52,8 @@ static void creat_task(void *p)
     /* creat app task in this 在这里创建应用任务 */
     // taskENTER_CRITICAL();
 
-    extern int app_task_init(void);
-    app_task_init();
+    // extern int app_task_init(void);
+    // app_task_init();
 
     // taskEXIT_CRITICAL();
     /* creat app task in this 在这里创建应用任务 */
@@ -82,7 +82,7 @@ void rtos_init(void)
     /* first creat task in this 创建rtos第一个任务，用于创建其他任务 */
     xReturn = xTaskCreate(  (TaskFunction_t )creat_task,
                             (const char *   )"creat_task",
-                            (unsigned short )128,
+                            (unsigned short )256,
                             (void *         )NULL,
                             (UBaseType_t    )1,
                             (TaskHandle_t * )&xTask_creat);
