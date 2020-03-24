@@ -67,6 +67,7 @@
 #define configUSE_APPLICATION_TASK_TAG	0
 #define configUSE_COUNTING_SEMAPHORES	1
 #define configGENERATE_RUN_TIME_STATS	0
+#define INCLUDE_xTaskGetSchedulerState  1
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
@@ -119,12 +120,9 @@ header file. */
 	
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
 standard names. */
-// #include "stm_config.h"
-// #if USE_OS
-#define vPortSVCHandler SVC_Handler
-#define xPortPendSVHandler PendSV_Handler
-#define xPortSysTickHandler SysTick_Handler
-// #endif
+// #define vPortSVCHandler SVC_Handler
+// #define xPortPendSVHandler PendSV_Handler
+// #define xPortSysTickHandler SysTick_Handler
 
 #endif /* FREERTOS_CONFIG_H */
 

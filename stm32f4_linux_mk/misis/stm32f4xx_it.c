@@ -116,11 +116,14 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-#if !USE_OS
 void SVC_Handler(void)
 {
-}
+#if !USE_OS
+
+#else
+    vPortSVCHandler();
 #endif
+}
 
 /**
   * @brief  This function handles Debug Monitor exception.
@@ -136,22 +139,37 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-#if !USE_OS
 void PendSV_Handler(void)
 {
-}
+#if !USE_OS
+
+#else
+    xPortPendSVHandler();
 #endif
+}
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-#if !USE_OS
+
 void SysTick_Handler(void)
 {
-}
+#if !USE_OS
+
+#else
+    /* USER CODE END SysTick_IRQn 0 */
+    #if (INCLUDE_xTaskGetSchedulerState == 1 )
+    if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
+    {
+    #endif /* INCLUDE_xTaskGetSchedulerState */
+        xPortSysTickHandler();
+    #if (INCLUDE_xTaskGetSchedulerState == 1 )
+    }
+    #endif /* INCLUDE_xTaskGetSchedulerState */
 #endif
+}
 
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */

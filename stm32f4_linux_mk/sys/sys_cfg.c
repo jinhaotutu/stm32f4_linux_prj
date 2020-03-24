@@ -137,7 +137,7 @@ static void GPIO_Configuration(void)
  **/
 static void NVIC_Configuration(void)
 {
-
+    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_1);
 }
 
 /***

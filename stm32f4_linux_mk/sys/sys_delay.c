@@ -26,7 +26,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx.h"
+#include "stm_config.h"
 
 /* Defines --------------------------------------------------------------------*/
 
@@ -40,26 +40,28 @@
 void Delay_Configuration(void)
 {
     SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;     //时钟源为系统时钟168MHz
-    SysTick->LOAD = 167;                             //重载值为168-1，每1us溢出一次
+    SysTick->LOAD = configCPU_CLOCK_HZ / configTICK_RATE_HZ - 1;                             //每1ms溢出一次
+
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
 void delay_ms(vu32 nTime)
 {
     nTime *= 1000;
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;        //使能SysTick，开始计数
+    // SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;        //使能SysTick，开始计数
     while(nTime--){
         while((SysTick->CTRL&0X010000) == 0);        //等待COUNTFLAG标志位置1
     }
-    SysTick->CTRL &= (~SysTick_CTRL_ENABLE_Msk);     //失能SysTick，停止计数
+    // SysTick->CTRL &= (~SysTick_CTRL_ENABLE_Msk);     //失能SysTick，停止计数
 }
 
 void delay_us(vu32 nTime)
 {
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+    // SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
     while(nTime--){
         while((SysTick->CTRL&0X010000) == 0);
     }
-    SysTick->CTRL &= (~SysTick_CTRL_ENABLE_Msk);
+    // SysTick->CTRL &= (~SysTick_CTRL_ENABLE_Msk);
 }
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
