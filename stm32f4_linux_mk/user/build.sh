@@ -29,9 +29,9 @@ echo "start stm32 linux project:[$APP_NAME""_app_v$APP_VER]"
 
 if [ -d "./$APP_NAME/output/$APP_VER" ] ;then
     rm -rf ./$APP_NAME/output/$APP_VER
-    mkdir ../user/$APP_NAME/output/$APP_VER
+    mkdir -p ../user/$APP_NAME/output/$APP_VER
 else
-    mkdir ../user/$APP_NAME/output/$APP_VER
+    mkdir -p ../user/$APP_NAME/output/$APP_VER
 fi
 
 cd ../obj
