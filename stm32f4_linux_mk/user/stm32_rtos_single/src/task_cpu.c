@@ -36,19 +36,19 @@ static TaskHandle_t task_cpu  = NULL;
   */
 static void task_cpu_cb(void *p)
 {
-    os_printf("%s", __FUNCTION__);
+    log_d("%s", __FUNCTION__);
     uint8_t CPU_info[400] = {0};
 
     while(1){
         vTaskDelay(5000);
 
         memset(CPU_info, 0, 400);
-        vTaskGetRunTimeStats((char *)&CPU_info);
+        // vTaskGetRunTimeStats((char *)&CPU_info);
 
-        printf("\r\n------------- cpu info -------------\r\n");
-        printf("name            cnt            used\r\n");
-        printf("%s", CPU_info);
-        printf("------------------------------------\r\n\r\n");
+        log_d("\r\n------------- cpu info -------------\r\n");
+        log_d("name            cnt            used\r\n");
+        log_d("%s", CPU_info);
+        log_d("------------------------------------\r\n\r\n");
     }
 }
 

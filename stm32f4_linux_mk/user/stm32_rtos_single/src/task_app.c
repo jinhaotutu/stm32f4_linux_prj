@@ -37,15 +37,15 @@ static TaskHandle_t task_led = NULL;
   */
 static void task_led_cb(void *p)
 {
-    os_printf("%s", __FUNCTION__);
+    log_d("%s", __FUNCTION__);
 
     while(1){
         log_d("led on...");
-        LED1_ON;
+        LED3_ON;
         vTaskDelay(1000);
 
         log_d("led off...");
-        LED1_OFF;
+        LED3_OFF;
         vTaskDelay(1000);
     }
 }
@@ -61,12 +61,12 @@ int app_task_init(void)
 {
     BaseType_t xReturn = pdPASS;
 
-    os_printf("app task creat");
+    log_d("app task creat");
 
     /* app task in this 创建rtos应用任务 */
     xReturn = xTaskCreate(  (TaskFunction_t )task_led_cb,
                             (const char *   )"task_led",
-                            (unsigned short )1024,
+                            (unsigned short )256,
                             (void *         )NULL,
                             (UBaseType_t    )1,
                             (TaskHandle_t * )&task_led);
@@ -75,8 +75,8 @@ int app_task_init(void)
         return -1;
     }
 
-    // extern int cpu_task_init(void);
-    // cpu_task_init();
+    extern int cpu_task_init(void);
+    cpu_task_init();
 
     return 0;
 }

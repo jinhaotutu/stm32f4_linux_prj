@@ -116,14 +116,11 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
+ #ifndef USE_OS
 void SVC_Handler(void)
 {
-#if !USE_OS
-
-#else
-    vPortSVCHandler();
-#endif
 }
+#endif
 
 /**
   * @brief  This function handles Debug Monitor exception.
@@ -139,14 +136,11 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
+ #ifndef USE_OS
 void PendSV_Handler(void)
 {
-#if !USE_OS
-
-#else
-    xPortPendSVHandler();
-#endif
 }
+#endif
 
 /**
   * @brief  This function handles SysTick Handler.
@@ -156,7 +150,7 @@ void PendSV_Handler(void)
 
 void SysTick_Handler(void)
 {
-#if !USE_OS
+#ifndef USE_OS
 
 #else
     /* USER CODE END SysTick_IRQn 0 */

@@ -137,7 +137,7 @@ static void GPIO_Configuration(void)
  **/
 static void NVIC_Configuration(void)
 {
-    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_1);
+    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_0);
 }
 
 /***
@@ -167,6 +167,39 @@ static void USART_Configuration(void)
     USART_Cmd(USART1,ENABLE);
 }
 
+/***
+ * 函数名称 : SysTick_Configuration();
+ *
+ * 函数描述 : tick初始化配置;
+ *
+ * 传递值	: 无;
+ *
+ * 返回值   : 无;
+ *
+ **/
+static void SysTick_Configuration(void)
+{
+    u32 reload;
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK); 
+	// fac_us=SystemCoreClock;							//不论是否使用OS,fac_us都需要使用
+	reload=configCPU_CLOCK_HZ/configTICK_RATE_HZ;							//每秒钟的计数次数 单位为M	   
+											//reload为24位寄存器,最大值:16777216,在168M下,约合0.0998s左右	
+	// fac_ms=1000/configTICK_RATE_HZ;			//代表OS可以延时的最少单位	   
+	SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;//开启SYSTICK中断
+	SysTick->LOAD=reload; 					//每1/configTICK_RATE_HZ断一次	
+	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk; //开启SYSTICK   
+}
+
+/***
+ * 函数名称 : easy_logger_init();
+ *
+ * 函数描述 : 日志初始化配置;
+ *
+ * 传递值	: 无;
+ *
+ * 返回值   : 无;
+ *
+ **/
 static void easy_logger_init(void)
 {
     printf("\r\n\r\n");
@@ -207,7 +240,7 @@ void Sys_Config(void)
 
     // Delay_Configuration();
 
-    SysTick_Config(168-1);
+    SysTick_Configuration();
 
     /* third lib init */
     easy_logger_init();
