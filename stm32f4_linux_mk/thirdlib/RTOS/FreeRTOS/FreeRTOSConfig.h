@@ -72,6 +72,9 @@
 #define configGENERATE_RUN_TIME_STATS	0
 #define INCLUDE_xTaskGetSchedulerState  1
 
+#define configSUPPORT_DYNAMIC_ALLOCATION 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
+
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 		0
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
