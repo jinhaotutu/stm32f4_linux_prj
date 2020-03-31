@@ -218,6 +218,28 @@ static void easy_logger_init(void)
     // elog_set_filter();
 }
 
+void rtos_sys_timer_init(void)
+{
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
+
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Prescaler = 168-1;
+    TIM_TimeBaseStructure.TIM_Period = 100;
+    TIM_TimeBaseInit(TIM1,&TIM_TimeBaseStructure);
+
+	// TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+	// TIM_ITConfig(TIM1,TIM_IT_Update,ENABLE);
+	TIM_Cmd(TIM1,ENABLE);
+}
+
+uint32_t rtos_sys_cnt_get(void)
+{
+    TIM_GetCounter(TIM1);
+}
+
 /***
  * 函数名称 : Sys_Config();
  *

@@ -153,6 +153,7 @@ void SysTick_Handler(void)
 #ifndef USE_OS
 
 #else
+    extern void xPortSysTickHandler( void );
     /* USER CODE END SysTick_IRQn 0 */
     #if (INCLUDE_xTaskGetSchedulerState == 1 )
     if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)

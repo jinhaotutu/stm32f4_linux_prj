@@ -47,11 +47,11 @@ static void task_cpu_cb(void *p)
         vTaskList(CPU_info);
         log_d("\r\n%s", CPU_info);
 
-        // vTaskGetRunTimeStats((char *)&CPU_info);
-        // log_d("\r\n------------- cpu info -------------\r\n");
-        // log_d("name            cnt            used\r\n");
-        // log_d("%s", CPU_info);
-        // log_d("------------------------------------\r\n\r\n");
+        vTaskGetRunTimeStats((char *)&CPU_info);
+        log_d("\r\n------------- cpu info -------------\r\n");
+        log_d("name            cnt            used\r\n");
+        log_d("%s", CPU_info);
+        log_d("------------------------------------\r\n\r\n");
     }
 }
 
