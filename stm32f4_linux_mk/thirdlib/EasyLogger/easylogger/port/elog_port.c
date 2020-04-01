@@ -25,8 +25,11 @@
  * Function: Portable interface for each platform.
  * Created on: 2015-04-28
  */
- 
+
 #include <elog.h>
+#include "stm_config.h"
+
+static SemaphoreHandle_t log_mutex = NULL;
 
 /**
  * EasyLogger port initialize
@@ -37,7 +40,11 @@ ElogErrCode elog_port_init(void) {
     ElogErrCode result = ELOG_NO_ERR;
 
     /* add your code here */
-    
+    log_mutex = xSemaphoreCreateMutex();
+    if (log_mutex == NULL){
+        result = ELOG_INIT_ERR;
+    }
+
     return result;
 }
 
@@ -61,20 +68,18 @@ void elog_port_output(const char *log, size_t size) {
  * output lock
  */
 void elog_port_output_lock(void) {
-    
+
     /* add your code here */
-    // #include "core_cmFunc.h"
-    // __disable_irq();
+    xSemaphoreTake(log_mutex, portMAX_DELAY);
 }
 
 /**
  * output unlock
  */
 void elog_port_output_unlock(void) {
-    
+
     /* add your code here */
-    // #include "core_cmFunc.h"
-    // __enable_irq();
+    xSemaphoreGive(log_mutex);
 }
 
 /**
@@ -83,7 +88,7 @@ void elog_port_output_unlock(void) {
  * @return current time
  */
 const char *elog_port_get_time(void) {
-    
+
     /* add your code here */
     return "10:08:12";
 }
@@ -94,7 +99,7 @@ const char *elog_port_get_time(void) {
  * @return current process name
  */
 const char *elog_port_get_p_info(void) {
-    
+
     /* add your code here */
     return "";
 }

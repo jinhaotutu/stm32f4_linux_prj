@@ -15,6 +15,8 @@
 /* rtos */
 #include "FreeRTOS.h"
 #include "task.h"
+#include "semphr.h"
+
 
 /* Defines --------------------------------------------------------------------*/
 #ifndef __FILENAME__

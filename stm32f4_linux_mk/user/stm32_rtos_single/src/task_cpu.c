@@ -42,16 +42,18 @@ static void task_cpu_cb(void *p)
     while(1){
         vTaskDelay(5000);
 
-        memset(CPU_info, 0, 400);
+        memset(CPU_info, 0, 1024);
 
-        vTaskList(CPU_info);
-        log_d("\r\n%s", CPU_info);
+        vTaskList((char *)CPU_info);
+        log_raw("\r\n------------- cpu info -------------\r\n");
+        log_raw("\r\nname            p       p        x      t\r\n");
+        log_raw("%s", CPU_info);
 
-        vTaskGetRunTimeStats((char *)&CPU_info);
-        log_d("\r\n------------- cpu info -------------\r\n");
-        log_d("name            cnt            used\r\n");
-        log_d("%s", CPU_info);
-        log_d("------------------------------------\r\n\r\n");
+        memset(CPU_info, 0, 1024);
+        vTaskGetRunTimeStats((char *)CPU_info);
+        log_raw("\r\nname            cnt            used\r\n");
+        log_raw("%s\r\n", CPU_info);
+        log_raw("------------------------------------\r\n\r\n");
     }
 }
 

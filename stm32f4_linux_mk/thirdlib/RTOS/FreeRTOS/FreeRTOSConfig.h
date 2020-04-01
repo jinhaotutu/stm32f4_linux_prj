@@ -76,8 +76,8 @@
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
 #if (defined configGENERATE_RUN_TIME_STATS) && (configGENERATE_RUN_TIME_STATS == 1)
-    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS  rtos_sys_timer_init
-    #define portGET_RUN_TIME_COUNTER_VALUE          rtos_sys_cnt_get
+    #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()  rtos_sys_timer_init()
+    #define portGET_RUN_TIME_COUNTER_VALUE()          rtos_sys_cnt_get()
 #endif
 
 /* Co-routine definitions. */

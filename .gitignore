@@ -57,3 +57,4 @@ stm32f4_linux_mk/obj/tools/gcc-arm-none-eabi-4_9-2015q3/
 stm32f4_linux_mk/user/stm32f4-mk.jlink
 
 .vscode/settings.json
+stm32f4_linux_mk/thirdlib/RTOS/FreeRTOS/portable/GCC

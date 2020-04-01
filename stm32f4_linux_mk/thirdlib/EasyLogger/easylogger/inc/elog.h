@@ -175,6 +175,7 @@ typedef struct {
 /* EasyLogger error code */
 typedef enum {
     ELOG_NO_ERR,
+    ELOG_INIT_ERR,
 } ElogErrCode;
 
 /* elog.c */
@@ -248,6 +249,8 @@ void elog_hexdump(const char *name, uint8_t width, uint8_t *buf, uint16_t size);
 #else
     #define log_v(...)       ((void)0);
 #endif
+
+#define     log_raw(...)     elog_raw(__VA_ARGS__)
 
 /* assert API short definition */
 #if !defined(assert)

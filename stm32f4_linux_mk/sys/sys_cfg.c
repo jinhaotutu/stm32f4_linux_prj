@@ -218,9 +218,19 @@ static void easy_logger_init(void)
     // elog_set_filter();
 }
 
+static uint64_t rtos_run_time_cnt = 0;
+
+void TIM2_IRQHandler(void)
+{
+    if(TIM_GetITStatus(TIM2,TIM_IT_Update) == SET){
+        rtos_run_time_cnt++;
+    }
+    TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
+}
+
 void rtos_sys_timer_init(void)
 {
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
 
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 
@@ -228,16 +238,25 @@ void rtos_sys_timer_init(void)
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
     TIM_TimeBaseStructure.TIM_Prescaler = 168-1;
     TIM_TimeBaseStructure.TIM_Period = 100;
-    TIM_TimeBaseInit(TIM1,&TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
 
-	// TIM_ClearFlag(TIM1, TIM_FLAG_Update);
-	// TIM_ITConfig(TIM1,TIM_IT_Update,ENABLE);
-	TIM_Cmd(TIM1,ENABLE);
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+    rtos_run_time_cnt = 0;
+    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_Cmd(TIM2, ENABLE);
 }
 
 uint32_t rtos_sys_cnt_get(void)
 {
-    TIM_GetCounter(TIM1);
+    return rtos_run_time_cnt;
 }
 
 /***
