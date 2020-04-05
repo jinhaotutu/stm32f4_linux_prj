@@ -1,33 +1,21 @@
 /**
+  *****************************************************************************
+  * @file    : sys_cfg.c
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : sys config
   ******************************************************************************
-  * @file    sys_delay.c
-  * @author  jinhao
-  * @version V1.0.0
-  * @date    22-April-2016
-  * @brief   Main program body
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
   ******************************************************************************
-  * @attention
+  * @atten   : Copyright (C) by Tuu Inc
   *
-  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
+  *****************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm_config.h"
-#include "sys_delay.h"
 
 
 /* Defines --------------------------------------------------------------------*/
@@ -39,16 +27,12 @@
 /* Functions ------------------------------------------------------------------*/
 
 
-/***
- * 函数名称 : RCC_Configuration();
- *
- * 函数描述 : RCC系统时钟初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   RCC_Configuration
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void RCC_Configuration(void)
 {
     RCC_DeInit();
@@ -75,23 +59,17 @@ static void RCC_Configuration(void)
     RCC_PCLK2Config(RCC_HCLK_Div2);
 }
 
-/***
- * 函数名称 : GPIO_Configuration();
- *
- * 函数描述 : GPIO初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   GPIO_Configuration
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void GPIO_Configuration(void)
 {
-    GPIO_InitTypeDef GPIO_InitStructure;	  
+    GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE);
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE,ENABLE);
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOF,ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE);
 
     /* LED GPIO口配置 */
@@ -103,15 +81,6 @@ static void GPIO_Configuration(void)
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
     GPIO_SetBits(GPIOC,GPIO_Pin_1|GPIO_Pin_0);
-
-    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_9|GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Mode=GPIO_Mode_OUT;
-    GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_OType=GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_NOPULL;
-    GPIO_Init(GPIOF, &GPIO_InitStructure);
-
-    GPIO_SetBits(GPIOF,GPIO_Pin_9|GPIO_Pin_10);
 
     /* USART1 GPIO口配置 */
     GPIO_InitStructure.GPIO_Pin=GPIO_Pin_9 | GPIO_Pin_10;
@@ -125,31 +94,23 @@ static void GPIO_Configuration(void)
     GPIO_PinAFConfig(GPIOA,GPIO_PinSource10,GPIO_AF_USART1);
 }
 
-/***
- * 函数名称 : NVIC_Configuration();
- *
- * 函数描述 : 中断初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   NVIC_Configuration
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void NVIC_Configuration(void)
 {
     NVIC_SetPriorityGrouping(NVIC_PriorityGroup_0);
 }
 
-/***
- * 函数名称 : USART_Configuration();
- *
- * 函数描述 : 串口初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   USART_Configuration
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void USART_Configuration(void)
 {
     USART_InitTypeDef USART_InitStructure;
@@ -167,39 +128,29 @@ static void USART_Configuration(void)
     USART_Cmd(USART1,ENABLE);
 }
 
-/***
- * 函数名称 : SysTick_Configuration();
- *
- * 函数描述 : tick初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   SysTick_Configuration
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void SysTick_Configuration(void)
 {
-    u32 reload;
-    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK); 
-	// fac_us=SystemCoreClock;							//不论是否使用OS,fac_us都需要使用
-	reload=configCPU_CLOCK_HZ/configTICK_RATE_HZ;							//每秒钟的计数次数 单位为M	   
-											//reload为24位寄存器,最大值:16777216,在168M下,约合0.0998s左右	
-	// fac_ms=1000/configTICK_RATE_HZ;			//代表OS可以延时的最少单位	   
-	SysTick->CTRL|=SysTick_CTRL_TICKINT_Msk;//开启SYSTICK中断
-	SysTick->LOAD=reload; 					//每1/configTICK_RATE_HZ断一次	
-	SysTick->CTRL|=SysTick_CTRL_ENABLE_Msk; //开启SYSTICK   
+    SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
+
+    uint32_t reload = configCPU_CLOCK_HZ / configTICK_RATE_HZ;
+
+    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+    SysTick->LOAD = reload;
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 }
 
-/***
- * 函数名称 : easy_logger_init();
- *
- * 函数描述 : 日志初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   easy_logger_init
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 static void easy_logger_init(void)
 {
     printf("\r\n\r\n");
@@ -218,59 +169,15 @@ static void easy_logger_init(void)
     // elog_set_filter();
 }
 
-static uint64_t rtos_run_time_cnt = 0;
-
-void TIM2_IRQHandler(void)
-{
-    if(TIM_GetITStatus(TIM2,TIM_IT_Update) == SET){
-        rtos_run_time_cnt++;
-    }
-    TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
-}
-
-void rtos_sys_timer_init(void)
-{
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
-
-    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-
-    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-    TIM_TimeBaseStructure.TIM_Prescaler = 168-1;
-    TIM_TimeBaseStructure.TIM_Period = 100;
-    TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
-
-    NVIC_InitTypeDef NVIC_InitStructure;
-
-    NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    rtos_run_time_cnt = 0;
-    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
-    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
-    TIM_Cmd(TIM2, ENABLE);
-}
-
-uint32_t rtos_sys_cnt_get(void)
-{
-    return rtos_run_time_cnt;
-}
-
-/***
- * 函数名称 : Sys_Config();
- *
- * 函数描述 : 系统初始化配置;
- *
- * 传递值	: 无;
- *
- * 返回值   : 无;
- *
- **/
+/**
+  * @note   Sys_Config
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
 void Sys_Config(void)
 {
+    /* system init */
     RCC_Configuration();
 
     GPIO_Configuration();
@@ -279,9 +186,10 @@ void Sys_Config(void)
 
     USART_Configuration();
 
-    // Delay_Configuration();
+    // SysTick_Configuration();
 
-    SysTick_Configuration();
+    /* user init */
+    delay_init();
 
     /* third lib init */
     easy_logger_init();
@@ -327,3 +235,144 @@ int fgetc(FILE *f)
     return (USART_ReceiveData(USART1));
 }
 #endif
+
+#if (defined configGENERATE_RUN_TIME_STATS) && (configGENERATE_RUN_TIME_STATS == 1)
+#define USE_IRQ_TICK_CNT    0
+#if USE_IRQ_TICK_CNT
+static uint64_t rtos_run_time_cnt = 0;
+
+/**
+  * @note   TIM2_IRQHandler
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void TIM2_IRQHandler(void)
+{
+    if(TIM_GetITStatus(TIM2,TIM_IT_Update) == SET){
+        rtos_run_time_cnt++;
+    }
+    TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
+}
+#endif
+
+/**
+  * @note   rtos_sys_timer_init
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void rtos_sys_timer_init(void)
+{
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE);
+
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+
+#if !USE_IRQ_TICK_CNT
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Prescaler = 16800-1;
+    TIM_TimeBaseStructure.TIM_Period = 0xFFFFFFFF;
+    TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
+#else
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseStructure.TIM_Prescaler = 168-1;
+    TIM_TimeBaseStructure.TIM_Period = 100;
+    TIM_TimeBaseInit(TIM2,&TIM_TimeBaseStructure);
+
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+    rtos_run_time_cnt = 0;
+    TIM_ClearFlag(TIM2, TIM_FLAG_Update);
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+#endif
+
+    TIM_Cmd(TIM2, ENABLE);
+}
+
+/**
+  * @note   rtos_sys_cnt_get
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+uint32_t rtos_sys_cnt_get(void)
+{
+#if USE_IRQ_TICK_CNT
+    // return rtos_run_time_cnt;
+#else
+    return TIM_GetCounter(TIM2);
+#endif
+}
+#endif
+
+void delay_init(void)
+{
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM14,ENABLE);    //168_div_2 -> 84M clk
+
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+
+    TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+    TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+    TIM_TimeBaseInit(TIM14,&TIM_TimeBaseStructure);
+
+    TIM_Cmd(TIM14, DISABLE);
+}
+
+/* sys delay code */
+void delay_ms(uint32_t nTime)
+{
+    if (nTime == 0){
+        return;
+    }
+
+    TIM_PrescalerConfig(TIM14, (84000/2-1), TIM_PSCReloadMode_Immediate);
+    TIM_SetAutoreload(TIM14, nTime*2);
+    TIM_ClearFlag(TIM14, TIM_FLAG_Update);
+
+    TIM_Cmd(TIM14, ENABLE);
+
+    while(TIM_GetFlagStatus(TIM14, TIM_FLAG_Update) == RESET);
+
+    TIM_Cmd(TIM14, DISABLE);
+}
+
+void delay_us(uint32_t nTime)
+{
+    if (nTime == 0){
+        return;
+    }
+
+    uint32_t time_ms;
+    uint32_t time_us;
+
+    time_ms = nTime/1000;
+    delay_ms(time_ms);
+
+    time_us = nTime%1000;
+
+    TIM_PrescalerConfig(TIM14, (84-1), TIM_PSCReloadMode_Immediate);
+    TIM_SetAutoreload(TIM14, time_us);
+    TIM_ClearFlag(TIM14, TIM_FLAG_Update);
+
+    TIM_Cmd(TIM14, ENABLE);
+
+    while(TIM_GetFlagStatus(TIM14, TIM_FLAG_Update) == RESET);
+
+    TIM_Cmd(TIM14, DISABLE);
+}
+
+void assert_failed(uint8_t* file, uint32_t line)
+{
+    os_printf("assert_failed:[%s][%d]", file, line);
+
+    while(1){
+    }
+}

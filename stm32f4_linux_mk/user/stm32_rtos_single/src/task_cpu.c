@@ -1,14 +1,17 @@
 /**
+  *****************************************************************************
+  * @file    : task_cpu.c
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : task function
   ******************************************************************************
-  * @file    task_cpu.c
-  * @author  Tuu
-  * @version V1.0.0
-  * @date    2020-01-28
-  * @brief   task function
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
   ******************************************************************************
-  * @attention
-  * Freertos run in the linux
-  ******************************************************************************
+  * @atten   : Copyright (C) by Tuu Inc
+  *
+  *****************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -29,10 +32,9 @@ static uint8_t CPU_info[1024] = {0};
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @brief  task_cpu_cb
-  * @note   None
+  * @note   task_cpu_cb
+  * @brief  None
   * @param  *p
-  * @param  None
   * @retval None
   */
 static void task_cpu_cb(void *p)
@@ -44,23 +46,25 @@ static void task_cpu_cb(void *p)
 
         memset(CPU_info, 0, 1024);
 
-        vTaskList((char *)CPU_info);
         log_raw("\r\n------------- cpu info -------------\r\n");
+
+        vTaskList((char *)CPU_info);
         log_raw("\r\nname            p       p        x      t\r\n");
         log_raw("%s", CPU_info);
 
+#if (defined configGENERATE_RUN_TIME_STATS) && (configGENERATE_RUN_TIME_STATS == 1)
         memset(CPU_info, 0, 1024);
         vTaskGetRunTimeStats((char *)CPU_info);
         log_raw("\r\nname            cnt            used\r\n");
         log_raw("%s\r\n", CPU_info);
+#endif
         log_raw("------------------------------------\r\n\r\n");
     }
 }
 
 /**
-  * @brief  cpu_task_init
-  * @note   None
-  * @param  None
+  * @note   cpu_task_init
+  * @brief  None
   * @param  None
   * @retval None
   */
@@ -82,9 +86,4 @@ int cpu_task_init(void)
     return 0;
 }
 
-
-/**
-  * @}
-  */
-
-/******************************** (C) Tuu *********************END OF FILE****/
+/************************ (C) COPYRIGHT Tuu ********END OF FILE****************/

@@ -1,28 +1,17 @@
 /**
+  *****************************************************************************
+  * @file    : main.c
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : stm32f407+linux+makefile demo
   ******************************************************************************
-  * @file    main.c
-  * @author  jinhao
-  * @version V1.0.0
-  * @date    22-April-2016
-  * @brief   Main program body
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
   ******************************************************************************
-  * @attention
+  * @atten   : Copyright (C) by Tuu Inc
   *
-  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
+  *****************************************************************************
   */
 
 /* Includes -------------------------------------------------------------------*/
@@ -39,8 +28,9 @@
 
 
 /**
-  * @brief  Main program
-  * @param  None
+  * @note   Main program
+  * @brief  None
+  * @param  *p
   * @retval None
   */
 int main(void)
@@ -53,13 +43,14 @@ int main(void)
     while(1)
     {
         log_d("led on...");
-        LED3_ON;
-        delay_ms(2000);
+        LED1_ON;
+        delay_ms(1000);
 
         log_d("led off...");
-        LED3_OFF;
-        delay_ms(2000);
+        LED1_OFF;
+        delay_ms(1000);
     }
 }
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT Tuu ********END OF FILE****************/
+

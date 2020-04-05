@@ -47,9 +47,13 @@
 	extern uint32_t SystemCoreClock;
 #endif
 
-/* user system define */
+/* user system define enable RTOS (使能RTOS) */
 #define USE_OS
 
+/* RTOS LOG(断言) */
+
+
+/*  */
 #define configUSE_PREEMPTION			1
 #define configUSE_IDLE_HOOK				0
 #define configUSE_TICK_HOOK				0

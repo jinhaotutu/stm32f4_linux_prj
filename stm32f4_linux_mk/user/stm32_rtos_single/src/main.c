@@ -1,28 +1,17 @@
 /**
+  *****************************************************************************
+  * @file    : main.c
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : stm32f407+FreeRTOS示例工程
   ******************************************************************************
-  * @file    main.c
-  * @author  jinhao
-  * @version V1.0.0
-  * @date    2020/03/23
-  * @brief   Main program body
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
   ******************************************************************************
-  * @attention
+  * @atten   : Copyright (C) by Tuu Inc
   *
-  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
-  *
-  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
-  * You may not use this file except in compliance with the License.
-  * You may obtain a copy of the License at:
-  *
-  *        http://www.st.com/software_license_agreement_liberty_v2
-  *
-  * Unless required by applicable law or agreed to in writing, software
-  * distributed under the License is distributed on an "AS IS" BASIS,
-  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  * See the License for the specific language governing permissions and
-  * limitations under the License.
-  *
-  ******************************************************************************
+  *****************************************************************************
   */
 
 /* Includes -------------------------------------------------------------------*/
@@ -38,10 +27,9 @@ static TaskHandle_t xTask_creat;
 /* Functions ------------------------------------------------------------------*/
 
 /**
-  * @brief  freertos first creat task
   * @note   This function is used to creat app task and delect self.
+  * @brief  None
   * @param  *p
-  * @param  None
   * @retval None
   */
 static void creat_task(void *p)
@@ -52,7 +40,6 @@ static void creat_task(void *p)
     /* creat app task in this 在这里创建应用任务 */
     taskENTER_CRITICAL();
 
-    // extern int app_task_init(void);
     app_task_init();
 
     taskEXIT_CRITICAL();
@@ -73,6 +60,12 @@ static void creat_task(void *p)
     vTaskDelete(xTask_creat);
 }
 
+/**
+  * @note   This function is used to creat app task and delect self.
+  * @brief  None
+  * @param  *p
+  * @retval None
+  */
 void rtos_init(void)
 {
     BaseType_t xReturn = pdPASS;
@@ -96,8 +89,9 @@ void rtos_init(void)
 }
 
 /**
-  * @brief  Main program
-  * @param  None
+  * @note   Main program
+  * @brief  None
+  * @param  *p
   * @retval None
   */
 int main(void)
@@ -111,10 +105,11 @@ int main(void)
     rtos_init();
 #endif
 
-    log_e("never get there");
+    log_e("never get here");
 
     while(1){
     }
 }
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT Tuu ********END OF FILE****************/
+

@@ -1,16 +1,19 @@
 /**
+  *****************************************************************************
+  * @file    : task_app.c
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : task function
   ******************************************************************************
-  * @file    task_app.c
-  * @author  Tuu
-  * @version V1.0.0
-  * @date    2020-01-28
-  * @brief   task function
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
   ******************************************************************************
-  * @attention
-  * Freertos run in the linux
-  * 2.second: rtos_task_2 ---> rtos_task_2.bin
-  ******************************************************************************
+  * @atten   : Copyright (C) by Tuu Inc
+  *
+  *****************************************************************************
   */
+
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm_config.h"
@@ -29,10 +32,9 @@ static TaskHandle_t task_led = NULL;
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @brief  task_demo_cb
-  * @note   This function is used to run app task
+  * @note   task_led_cb
+  * @brief  This function is used to run app task
   * @param  *p
-  * @param  None
   * @retval None
   */
 static void task_led_cb(void *p)
@@ -41,21 +43,20 @@ static void task_led_cb(void *p)
 
     while(1){
         log_d("led on...");
-        LED3_ON;
-        vTaskDelay(1000);
+        LED1_ON;
+        vTaskDelay(2000);
 
         log_d("led off...");
-        LED3_OFF;
-        vTaskDelay(1000);
+        LED1_OFF;
+        vTaskDelay(2000);
     }
 }
 
 /**
-  * @brief  app_task_init
-  * @note   None
+  * @note   app_task_init
+  * @brief  None
   * @param  None
-  * @param  None
-  * @retval None
+  * @retval int
   */
 int app_task_init(void)
 {
@@ -81,9 +82,4 @@ int app_task_init(void)
     return 0;
 }
 
-
-/**
-  * @}
-  */
-
-/******************************** (C) Tuu *********************END OF FILE****/
+/************************ (C) COPYRIGHT Tuu ********END OF FILE****************/

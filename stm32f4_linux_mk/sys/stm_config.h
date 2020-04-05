@@ -1,3 +1,19 @@
+/**
+  *****************************************************************************
+  * @file    : stm_config.h
+  * @author  : Tuu-图图
+  * @version : 1.0.0
+  * @date    : 2020-04-01
+  * @brief   : Header for stm32f4 config
+  ******************************************************************************
+  * @lasteditors  : Tuu-图图
+  * @lasteditTime : 2020-04-01
+  ******************************************************************************
+  * @atten   : Copyright (C) by Tuu Inc
+  *
+  *****************************************************************************
+  */
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef  STM32_CONFIG_H
 #define  STM32_CONFIG_H
@@ -7,7 +23,6 @@
 #include <string.h>
 #include "stm32f4xx.h"
 #include "sys_cfg.h"
-#include "sys_delay.h"
 
 /* third lib include */
 #include <elog.h>
@@ -17,6 +32,22 @@
 #include "task.h"
 #include "semphr.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __EXTERN_GLOBAL
+    #define __EXTERN
+#else
+    #define __EXTERN extern
+#endif
+
+/**
+  *****************************************************************************
+  * @version brief  :
+  *****************************************************************************
+  */
 
 /* Defines --------------------------------------------------------------------*/
 #ifndef __FILENAME__
@@ -33,6 +64,10 @@
 
 /* Functions ------------------------------------------------------------------*/
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* STM32_CONFIG_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT Tuu ********END OF FILE****************/
