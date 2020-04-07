@@ -164,6 +164,13 @@ void SysTick_Handler(void)
     }
     #endif /* INCLUDE_xTaskGetSchedulerState */
 #endif
+
+#ifndef USE_LWIP
+
+#else
+    extern void update_lwip_tick(uint32_t tick);
+    update_lwip_tick(1);
+#endif
 }
 
 /******************************************************************************/

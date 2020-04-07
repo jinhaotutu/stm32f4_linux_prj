@@ -32,6 +32,8 @@
 #include "task.h"
 #include "semphr.h"
 
+/* lwip */
+#include "lwipopts.h"
 
 #ifdef __cplusplus
 extern "C" {

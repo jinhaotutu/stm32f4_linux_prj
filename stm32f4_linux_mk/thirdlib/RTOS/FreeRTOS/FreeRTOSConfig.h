@@ -75,7 +75,7 @@
 #define INCLUDE_xTaskGetSchedulerState  1
 
 #define configUSE_TRACE_FACILITY		1
-#define configGENERATE_RUN_TIME_STATS	1
+#define configGENERATE_RUN_TIME_STATS	0
 #define configSUPPORT_DYNAMIC_ALLOCATION 1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 1
 

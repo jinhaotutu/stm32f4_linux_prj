@@ -31,6 +31,20 @@ INC += -I../thirdlib/RTOS/FreeRTOS
 INC += -I../thirdlib/RTOS/FreeRTOS/inc
 INC += -I../thirdlib/RTOS/FreeRTOS/portable
 
+# LWIP ****
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/api/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/core/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/core/ipv4/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/core/snmp/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/netif/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/netif/ppp/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/port/STM32F4x7/Standalone/*.c)
+INC += -I../thirdlib/lwip/lwip-1.4.1/port/STM32F4x7
+INC += -I../thirdlib/lwip/lwip-1.4.1/src/netif/ppp
+INC += -I../thirdlib/lwip/lwip-1.4.1/src/include/ipv4
+INC += -I../thirdlib/lwip/lwip-1.4.1/src/include
+INC += -I../thirdlib/lwip/lwip-1.4.1
+
 #user
 C_SRCS += $(wildcard ../user/${APP_NAME}/src/*.c)
 INC += -I../user/${APP_NAME}/inc
