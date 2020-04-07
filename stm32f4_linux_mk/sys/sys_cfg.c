@@ -186,7 +186,7 @@ void Sys_Config(void)
 
     USART_Configuration();
 
-    // SysTick_Configuration();
+    SysTick_Configuration();
 
     /* user init */
     delay_init();
