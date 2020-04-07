@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    ADC/ADC_DMA/stm32f4xx_it.h 
+  * @file    stm32f4xx_it.h 
   * @author  MCD Application Team
-  * @version V1.7.0
-  * @date    22-April-2016
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   This file contains the headers of the interrupt handlers.
   ******************************************************************************
   * @attention
@@ -34,7 +34,6 @@
 #endif 
 
 /* Includes ------------------------------------------------------------------*/
-#include "main.h"
 #include "stm32f4xx.h"
 
 /* Exported types ------------------------------------------------------------*/

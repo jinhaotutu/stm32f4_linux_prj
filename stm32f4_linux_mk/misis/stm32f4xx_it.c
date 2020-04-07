@@ -1,9 +1,9 @@
 /**
   ******************************************************************************
-  * @file    ADC/ADC_DMA/stm32f4xx_it.c 
+  * @file    stm32f4xx_it.c 
   * @author  MCD Application Team
-  * @version V1.7.0
-  * @date    22-April-2016
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   Main Interrupt Service Routines.
   *          This file provides template for all exceptions handler and 
   *          peripherals interrupt service routine.
@@ -31,13 +31,9 @@
 #include "stm32f4xx_it.h"
 #include "stm_config.h"
 
-/** @addtogroup STM32F4xx_StdPeriph_Examples
+/** @addtogroup Template_Project
   * @{
   */
-
-/** @addtogroup ADC_DMA
-  * @{
-  */  
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -51,7 +47,7 @@
 /******************************************************************************/
 
 /**
-  * @brief   This function handles NMI exception.
+  * @brief  This function handles NMI exception.
   * @param  None
   * @retval None
   */
@@ -177,17 +173,21 @@ void SysTick_Handler(void)
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
 /*  available peripheral interrupt handler's name please refer to the startup */
-/*  file (startup_stm32f40xx.s/startup_stm32f427x.s/startup_stm32f429x.s).  */
+/*  file (startup_stm32f4xx.s).                                               */
 /******************************************************************************/
+
+/**
+  * @brief  This function handles PPP interrupt request.
+  * @param  None
+  * @retval None
+  */
+/*void PPP_IRQHandler(void)
+{
+}*/
 
 /**
   * @}
   */ 
-
-
-/**
-  * @}
-  */   
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

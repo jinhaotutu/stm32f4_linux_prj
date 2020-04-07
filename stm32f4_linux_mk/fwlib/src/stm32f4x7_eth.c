@@ -30,7 +30,6 @@
 #include "stm32f4x7_eth.h"
 #include "stm32f4xx_rcc.h"
 #include <string.h>
-#include "stm_config.h"
 
 /** @addtogroup STM32F4x7_ETH_Driver
   * @brief ETH driver modules
@@ -373,7 +372,7 @@ uint32_t ETH_Init(ETH_InitTypeDef* ETH_InitStruct, uint16_t PHYAddress)
     err = ETH_ERROR;
     goto error;
   }
- 
+  
   /* Delay to assure PHY reset */
   _eth_delay_(PHY_RESET_DELAY);
   
@@ -427,17 +426,17 @@ uint32_t ETH_Init(ETH_InitTypeDef* ETH_InitStruct, uint16_t PHYAddress)
     else
     {
       /* Set Ethernet duplex mode to Half-duplex following the auto-negotiation */
-      ETH_InitStruct->ETH_Mode = ETH_Mode_HalfDuplex;
+      ETH_InitStruct->ETH_Mode = ETH_Mode_HalfDuplex;           
     }
     /* Configure the MAC with the speed fixed by the auto-negotiation process */
     if(RegValue & PHY_SPEED_STATUS)
-    {
+    {  
       /* Set Ethernet speed to 10M following the auto-negotiation */
-      ETH_InitStruct->ETH_Speed = ETH_Speed_10M;
+      ETH_InitStruct->ETH_Speed = ETH_Speed_10M; 
     }
     else
-    {
-      /* Set Ethernet speed to 100M following the auto-negotiation */
+    {   
+      /* Set Ethernet speed to 100M following the auto-negotiation */ 
       ETH_InitStruct->ETH_Speed = ETH_Speed_100M;
     }
   }
@@ -1914,7 +1913,7 @@ FlagStatus ETH_GetDMAFlagStatus(uint32_t ETH_DMA_FLAG)
 }
 
 /**
-  * @brief  Clears the ETHERNETï¿½s DMA pending flag.
+  * @brief  Clears the ETHERNET’s DMA pending flag.
   * @param  ETH_DMA_FLAG: specifies the flag to clear.
   *   This parameter can be any combination of the following values:
   *     @arg ETH_DMA_FLAG_NIS : Normal interrupt summary flag
@@ -2026,7 +2025,7 @@ ITStatus ETH_GetDMAITStatus(uint32_t ETH_DMA_IT)
 }
 
 /**
-  * @brief  Clears the ETHERNETï¿½s DMA IT pending bit.
+  * @brief  Clears the ETHERNET’s DMA IT pending bit.
   * @param  ETH_DMA_IT: specifies the interrupt pending bit to clear.
   *   This parameter can be any combination of the following values:
   *     @arg ETH_DMA_IT_NIS : Normal interrupt summary 
@@ -2313,7 +2312,7 @@ uint16_t ETH_ReadPHYRegister(uint16_t PHYAddress, uint16_t PHYReg)
   __IO uint32_t timeout = 0;
   /* Check the parameters */
   assert_param(IS_ETH_PHY_ADDRESS(PHYAddress));
-//   assert_param(IS_ETH_PHY_REG(PHYReg));
+  assert_param(IS_ETH_PHY_REG(PHYReg));
   
   /* Get the ETHERNET MACMIIAR value */
   tmpreg = ETH->MACMIIAR;
