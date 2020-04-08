@@ -46,9 +46,7 @@ int main(void)
 
     log_d("sys config finish");
 
-    ETH_BSP_Config();
-
-    LwIP_Init();
+    NetWork_Init();
 
     LED1_ON;
 

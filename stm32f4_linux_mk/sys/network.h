@@ -85,6 +85,8 @@ extern "C" {
 #define ETH_REG_WRITE_DELAY ((uint32_t)0x0000FFFF)
 #endif
 
+#define AUTONEGOTIATION         1
+
 /* These values are relatives to LAN8720 PHY and change from PHY to another,
     so the user have to update this value depending on the used external PHY */
 
@@ -98,22 +100,11 @@ extern "C" {
 /* eth config */
 #define RMII_MODE
 
-#define DP83848_PHY_ADDRESS       0x01
-
 #define PHY_ADDRESS             0x01
 
 /* Ethernet Flags for EthStatus variable */
 #define ETH_INIT_FLAG           0x01 /* Ethernet Init Flag */
 #define ETH_LINK_FLAG           0x10 /* Ethernet Link Flag */
-
-#define ETH_LINK_EXTI_LINE             EXTI_Line14
-#define ETH_LINK_EXTI_PORT_SOURCE      EXTI_PortSourceGPIOB
-#define ETH_LINK_EXTI_PIN_SOURCE       EXTI_PinSource14
-#define ETH_LINK_EXTI_IRQn             EXTI15_10_IRQn 
-/* PB14 */
-#define ETH_LINK_PIN                   GPIO_Pin_14
-#define ETH_LINK_GPIO_PORT             GPIOB
-#define ETH_LINK_GPIO_CLK              RCC_AHB1Periph_GPIOB
 
 /* Types ----------------------------------------------------------------------*/
 
@@ -122,10 +113,7 @@ extern "C" {
 
 
 /* Functions ------------------------------------------------------------------*/
-void  ETH_BSP_Config(void);
-uint32_t Eth_Link_PHYITConfig(uint16_t PHYAddress);
-void Eth_Link_EXTIConfig(void);
-void Eth_Link_ITHandler(uint16_t PHYAddress);
+uint32_t ETH_BSP_Config(void);
 
 #ifdef __cplusplus
 }

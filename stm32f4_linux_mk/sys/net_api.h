@@ -47,7 +47,7 @@ extern "C" {
 
 
 /* Functions ------------------------------------------------------------------*/
-void LwIP_Init(void);
+uint32_t NetWork_Init(void);
 void LwIP_Pkt_Handle(void);
 void LwIP_Periodic_Handle(uint32_t localtime);
 
