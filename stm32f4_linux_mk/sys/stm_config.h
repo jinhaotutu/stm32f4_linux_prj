@@ -33,6 +33,7 @@
 #include "semphr.h"
 
 /* lwip */
+// #include "stm32f4x7_eth.h"
 #include "lwipopts.h"
 
 #ifdef __cplusplus

@@ -17,7 +17,7 @@
 /* Includes -------------------------------------------------------------------*/
 #include "stm_config.h"
 
-#include "stm32f4x7_eth_bsp.h"
+#include "network.h"
 #include "net_api.h"
 
 /* Defines --------------------------------------------------------------------*/

@@ -35,7 +35,8 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4x7_eth_conf.h"
+/* include eth->phy config header */
+#include "network.h"
 
 /** @addtogroup STM32F4x7_ETH_Driver
   * @{

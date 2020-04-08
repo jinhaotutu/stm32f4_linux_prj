@@ -34,10 +34,9 @@
 #include "netif/etharp.h"
 #include "lwip/dhcp.h"
 #include "Standalone/ethernetif.h"
-#include "net_api.h"
 #include <stdio.h>
-#include "stm32f4x7_eth_bsp.h"
 #include "stm_config.h"
+#include "network.h"
 
 /* Private typedef -----------------------------------------------------------*/
 #define MAX_DHCP_TRIES        4
@@ -143,6 +142,7 @@ void LwIP_Init(void)
   }
 
   /* Set the link callback function, this function is called on change of link status*/
+  extern void ETH_link_callback(struct netif *netif);
   netif_set_link_callback(&gnetif, ETH_link_callback);
 }
 
