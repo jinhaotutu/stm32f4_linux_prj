@@ -24,14 +24,8 @@
 
 
 /* Variables ------------------------------------------------------------------*/
-static __IO uint32_t LocalTime = 0;
 
 /* Functions ------------------------------------------------------------------*/
-
-void update_lwip_tick(uint32_t tick)
-{
-    LocalTime += tick;
-}
 
 /**
   * @note   Main program
@@ -41,25 +35,19 @@ void update_lwip_tick(uint32_t tick)
   */
 int main(void)
 {
+    int err_t = 0;
+
     /* stm32系统配置 */
     Sys_Config();
 
     log_d("sys config finish");
 
-    NetWork_Init();
-
-    LED1_ON;
+    err_t = NetWork_Init();
 
     while(1)
     {
-        if (ETH_CheckFrameReceived())
-        {
-            /* process received ethernet packet*/
-            LwIP_Pkt_Handle();
-        }
-
         /* handle periodic timers for LwIP*/
-        LwIP_Periodic_Handle(LocalTime);
+        LwIP_Periodic_Handle();
     }
 }
 

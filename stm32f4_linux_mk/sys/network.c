@@ -36,6 +36,40 @@
 /* Variables ------------------------------------------------------------------*/
 
 /* Functions ------------------------------------------------------------------*/
+static void Eth_Link_Sta_Change(void)
+{
+    extern void link_status_change(uint8_t status);
+
+    if(ETH_ReadPHYRegister(PHY_ADDRESS, PHY_SR) & PHY_DUPLEX_STATUS)
+    {
+        LED2_ON;
+        link_status_change(true);
+    }
+    else
+    {
+        LED2_OFF;
+        link_status_change(false);
+    }
+}
+
+
+void ETH_IRQHandler(void)
+{
+    if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_R) == SET){
+        LED1_ON;
+        while(ETH_CheckFrameReceived()){
+            LwIP_Pkt_Handle();
+        }
+
+        ETH_DMAClearITPendingBit(ETH_DMA_IT_R);
+        LED1_OFF;
+    }
+
+    if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_NIS) == SET){
+        Eth_Link_Sta_Change();
+        ETH_DMAClearITPendingBit(ETH_DMA_IT_NIS);
+    }
+}
 
 /**
   * @brief  Configures the different GPIO ports.
@@ -176,6 +210,16 @@ static uint32_t ETH_MACDMA_Config(void)
     /* Configure Ethernet */
     EthStatus = ETH_Init(&ETH_InitStructure, PHY_ADDRESS);
 
+
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_InitStructure.NVIC_IRQChannel = ETH_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+
+    ETH_DMAITConfig(ETH_DMA_IT_NIS | ETH_DMA_IT_R, ENABLE);
+
     return EthStatus;
 }
 
@@ -187,14 +231,16 @@ static uint32_t ETH_MACDMA_Config(void)
 uint32_t ETH_BSP_Config(void)
 {
     uint32_t EthStatus = 0;
-    RCC_ClocksTypeDef RCC_Clocks;
 
+#if ENABLE_RCC_INIT
     /***************************************************************************
         NOTE:
             When using Systick to manage the delay in Ethernet driver, the Systick
             must be configured before Ethernet initialization and, the interrupt
             priority should be the highest one.
     *****************************************************************************/
+
+    RCC_ClocksTypeDef RCC_Clocks;
 
     /* Configure Systick clock source as HCLK */
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
@@ -205,12 +251,13 @@ uint32_t ETH_BSP_Config(void)
 
     /* Set Systick interrupt priority to 0*/
     NVIC_SetPriority (SysTick_IRQn, 0);
+#endif
 
     /* Configure the GPIO ports for ethernet pins */
     ETH_GPIO_Config();
 
     /* Configure the Ethernet MAC/DMA */
-    ETH_MACDMA_Config();
+    EthStatus |= ETH_MACDMA_Config();
 
     /* Get Ethernet link status*/
     if(ETH_ReadPHYRegister(PHY_ADDRESS, PHY_SR) & PHY_DUPLEX_STATUS)

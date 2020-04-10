@@ -48,8 +48,54 @@ static uint32_t TCPTimer = 0;
 static uint32_t ARPTimer = 0;
 static uint32_t IPaddress = 0;
 
+static __IO uint32_t localtime = 0;
+
 /* Private functions ---------------------------------------------------------*/
 
+/**
+  * @brief  This function handles Ethernet link status.
+  * @param  None
+  * @retval None
+  */
+void link_status_change(uint8_t status)
+{
+  /* Check whether the link interrupt has occurred or not */
+    if(status == true)
+    {
+        LED2_ON;
+        netif_set_link_up(&gnetif);
+    }
+    else
+    {
+        LED2_OFF;
+        netif_set_link_down(&gnetif);
+    }
+}
+
+/**
+  * @brief  Link callback function, this function is called on change of link status.
+  * @param  The network interface
+  * @retval None
+  */
+void ETH_link_callback(struct netif *netif)
+{
+    __IO uint32_t timeout = 0;
+    uint32_t tmpreg,RegValue;
+    struct ip_addr ipaddr;
+    struct ip_addr netmask;
+    struct ip_addr gw;
+
+    if(netif_is_link_up(netif))
+    {
+        /* When the netif is fully configured this function must be called.*/
+        netif_set_up(&gnetif);
+    }
+    else
+    {
+        /*  When the netif link is down this function must be called.*/
+        netif_set_down(&gnetif);
+    }
+}
 
 /**
 * @brief  Initializes the lwIP stack
@@ -68,11 +114,7 @@ uint32_t NetWork_Init(void)
     EthStatus = ETH_BSP_Config();
     log_d("EthStatus:0x%02x", EthStatus);
 
-    /* Initializes the dynamic memory heap defined by MEM_SIZE.*/
-    mem_init();
-
-    /* Initializes the memory pools defined by MEMP_NUM_x.*/
-    memp_init();
+    lwip_init();
 
     IP4_ADDR(&ipaddr, 192, 168, 1, 88);
     IP4_ADDR(&netmask, 255, 255, 255, 0);
@@ -112,8 +154,13 @@ uint32_t NetWork_Init(void)
     }
 
     /* Set the link callback function, this function is called on change of link status*/
-    //   extern void ETH_link_callback(struct netif *netif);
-    //   netif_set_link_callback(&gnetif, ETH_link_callback);
+    netif_set_link_callback(&gnetif, ETH_link_callback);
+    return 1;
+}
+
+void update_lwip_tick(uint32_t tick)
+{
+    localtime += tick;
 }
 
 /**
@@ -132,7 +179,7 @@ void LwIP_Pkt_Handle(void)
 * @param  localtime the current LocalTime value
 * @retval None
 */
-void LwIP_Periodic_Handle(__IO uint32_t localtime)
+void LwIP_Periodic_Handle(void)
 {
 #if LWIP_TCP
     /* TCP periodic process every 250 ms */

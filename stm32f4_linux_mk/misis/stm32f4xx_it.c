@@ -165,7 +165,11 @@ void SysTick_Handler(void)
 
 #else
     extern void update_lwip_tick(uint32_t tick);
+#ifndef USE_OS
     update_lwip_tick(1);
+#else
+    update_lwip_tick(1000/configTICK_RATE_HZ);
+#endif
 #endif
 }
 

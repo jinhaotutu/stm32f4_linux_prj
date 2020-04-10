@@ -87,6 +87,8 @@ extern "C" {
 
 #define AUTONEGOTIATION         1
 
+#define ENABLE_RCC_INIT         0
+
 /* These values are relatives to LAN8720 PHY and change from PHY to another,
     so the user have to update this value depending on the used external PHY */
 

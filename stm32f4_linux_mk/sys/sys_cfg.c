@@ -71,16 +71,22 @@ static void GPIO_Configuration(void)
 
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA,ENABLE);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD,ENABLE);
 
     /* LED GPIO口配置 */
-    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_1|GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_0;
     GPIO_InitStructure.GPIO_Mode=GPIO_Mode_OUT;
     GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_OType=GPIO_OType_PP;
     GPIO_InitStructure.GPIO_PuPd=GPIO_PuPd_NOPULL;
     GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-    GPIO_SetBits(GPIOC,GPIO_Pin_1|GPIO_Pin_0);
+    LED1_OFF;
+
+    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_3;
+    GPIO_Init(GPIOD, &GPIO_InitStructure);
+
+    LED2_OFF;
 
     /* USART1 GPIO口配置 */
     GPIO_InitStructure.GPIO_Pin=GPIO_Pin_9 | GPIO_Pin_10;
@@ -136,9 +142,15 @@ static void USART_Configuration(void)
   */
 static void SysTick_Configuration(void)
 {
+    uint32_t reload;
+
     SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
 
-    uint32_t reload = configCPU_CLOCK_HZ / configTICK_RATE_HZ;
+#ifndef USE_OS
+    reload = SystemCoreClock / 1000;
+#else
+    reload = configCPU_CLOCK_HZ / configTICK_RATE_HZ;
+#endif
 
     SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
     SysTick->LOAD = reload;

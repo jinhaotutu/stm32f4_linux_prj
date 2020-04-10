@@ -49,7 +49,7 @@ extern "C" {
 /* Functions ------------------------------------------------------------------*/
 uint32_t NetWork_Init(void);
 void LwIP_Pkt_Handle(void);
-void LwIP_Periodic_Handle(uint32_t localtime);
+void LwIP_Periodic_Handle(void);
 
 
 #ifdef __cplusplus
