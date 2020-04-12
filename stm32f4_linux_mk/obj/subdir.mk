@@ -39,6 +39,7 @@ C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/core/snmp/*.c)
 C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/netif/*.c)
 C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/src/netif/ppp/*.c)
 C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/port/STM32F4x7/Standalone/*.c)
+C_SRCS += $(wildcard ../thirdlib/lwip/lwip-1.4.1/port/STM32F4x7/os/*.c)
 INC += -I../thirdlib/lwip/lwip-1.4.1/port/STM32F4x7
 INC += -I../thirdlib/lwip/lwip-1.4.1/src/netif/ppp
 INC += -I../thirdlib/lwip/lwip-1.4.1/src/include/ipv4

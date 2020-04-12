@@ -42,7 +42,7 @@ int main(void)
 
     log_d("sys config finish");
 
-    err_t = NetWork_Init();
+    err_t = NetWork_Init_no_os();
 
     while(1)
     {

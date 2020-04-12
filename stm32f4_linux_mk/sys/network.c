@@ -42,12 +42,10 @@ static void Eth_Link_Sta_Change(void)
 
     if(ETH_ReadPHYRegister(PHY_ADDRESS, PHY_SR) & PHY_DUPLEX_STATUS)
     {
-        LED2_ON;
         link_status_change(true);
     }
     else
     {
-        LED2_OFF;
         link_status_change(false);
     }
 }
@@ -56,13 +54,11 @@ static void Eth_Link_Sta_Change(void)
 void ETH_IRQHandler(void)
 {
     if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_R) == SET){
-        LED1_ON;
         while(ETH_CheckFrameReceived()){
             LwIP_Pkt_Handle();
         }
 
         ETH_DMAClearITPendingBit(ETH_DMA_IT_R);
-        LED1_OFF;
     }
 
     if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_NIS) == SET){

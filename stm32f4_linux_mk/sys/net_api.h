@@ -39,7 +39,6 @@ extern "C" {
 
 /* Defines --------------------------------------------------------------------*/
 
-
 /* Types ----------------------------------------------------------------------*/
 
 
@@ -48,6 +47,7 @@ extern "C" {
 
 /* Functions ------------------------------------------------------------------*/
 uint32_t NetWork_Init(void);
+uint32_t NetWork_Init_no_os(void);
 void LwIP_Pkt_Handle(void);
 void LwIP_Periodic_Handle(void);
 

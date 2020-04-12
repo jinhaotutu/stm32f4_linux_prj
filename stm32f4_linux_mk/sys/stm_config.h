@@ -59,6 +59,8 @@ extern "C" {
 #define os_printf(_fmt_, ...) \
         printf("[log ] %s:%d | "_fmt_"\r\n", __FILENAME__, __LINE__, ##__VA_ARGS__)
 
+/* user define */
+
 /* Types ----------------------------------------------------------------------*/
 
 

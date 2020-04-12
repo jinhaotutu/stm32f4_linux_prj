@@ -88,6 +88,6 @@ typedef int sys_prot_t;
 
 #endif
 
-#define LWIP_PLATFORM_ASSERT(x) //do { if(!(x)) while(1); } while(0)
+#define LWIP_PLATFORM_ASSERT(x) do { if(x) printf("%s\r\n", x); } while(0)
 
 #endif /* __CC_H__ */

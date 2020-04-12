@@ -29,8 +29,8 @@
  * Author: Adam Dunkels <adam@sics.se>
  *
  */
-#ifndef __SYS_RTXC_H__
-#define __SYS_RTXC_H__
+#ifndef __SYS_ARCH_H__
+#define __SYS_ARCH_H__
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -46,6 +46,8 @@ typedef xSemaphoreHandle sys_mutex_t;
 typedef xQueueHandle sys_mbox_t;
 typedef xTaskHandle sys_thread_t;
 
+#define LWIP_COMPAT_MUTEX   1
+
 typedef struct _sys_arch_state_t
 {
 	// Task creation data.
@@ -54,14 +56,7 @@ typedef struct _sys_arch_state_t
 	unsigned short nTaskCount;
 } sys_arch_state_t;
 
-
-
-//extern sys_arch_state_t s_sys_arch_state;
-
-//void sys_set_default_state();
-//void sys_set_state(signed char *pTaskName, unsigned short nStackSize);
-
 /* Message queue constants. */
 #define archMESG_QUEUE_LENGTH	( 6 )
-#endif /* __SYS_RTXC_H__ */
+#endif /* __SYS_ARCH_H__ */
 

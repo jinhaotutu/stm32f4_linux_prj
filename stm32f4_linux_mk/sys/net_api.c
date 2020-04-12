@@ -29,6 +29,7 @@
 #include "lwip/mem.h"
 #include "lwip/memp.h"
 #include "lwip/tcp.h"
+#include "lwip/tcpip.h"
 #include "lwip/tcp_impl.h"
 #include "lwip/udp.h"
 #include "netif/etharp.h"
@@ -89,11 +90,13 @@ void ETH_link_callback(struct netif *netif)
     {
         /* When the netif is fully configured this function must be called.*/
         netif_set_up(&gnetif);
+        log_d("netif_set_up");
     }
     else
     {
         /*  When the netif link is down this function must be called.*/
         netif_set_down(&gnetif);
+        log_d("netif_set_down");
     }
 }
 
@@ -103,6 +106,68 @@ void ETH_link_callback(struct netif *netif)
 * @retval None
 */
 uint32_t NetWork_Init(void)
+{
+    uint32_t EthStatus = 0;
+
+    struct ip_addr ipaddr;
+    struct ip_addr netmask;
+    struct ip_addr gw;
+
+    /* eth init */
+    EthStatus = ETH_BSP_Config();
+    log_d("EthStatus:0x%02x", EthStatus);
+
+    tcpip_init(NULL, NULL);
+
+    IP4_ADDR(&ipaddr, 192, 168, 1, 88);
+    IP4_ADDR(&netmask, 255, 255, 255, 0);
+    IP4_ADDR(&gw, 192, 168, 1, 1);
+
+    /* - netif_add(struct netif *netif, struct ip_addr *ipaddr,
+    struct ip_addr *netmask, struct ip_addr *gw,
+    void *state, err_t (* init)(struct netif *netif),
+    err_t (* input)(struct pbuf *p, struct netif *netif))
+
+    Adds your network interface to the netif_list. Allocate a struct
+    netif and pass a pointer to this structure as the first argument.
+    Give pointers to cleared ip_addr structures when using DHCP,
+    or fill them with sane numbers otherwise. The state pointer may be NULL.
+
+    The init function pointer must point to a initialization function for
+    your ethernet netif interface. The following code illustrates it's use.*/
+    netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, ethernetif_init, tcpip_input);
+
+    /*  Registers the default network interface.*/
+    netif_set_default(&gnetif);
+
+    if (EthStatus == (ETH_INIT_FLAG | ETH_LINK_FLAG))
+    {
+        log_d("netif_set_up");
+        /* Set Ethernet link flag */
+        gnetif.flags |= NETIF_FLAG_LINK_UP;
+
+        /* When the netif is fully configured this function must be called.*/
+        netif_set_up(&gnetif);
+    }
+    else
+    {
+        log_d("netif_set_down");
+        /*  When the netif link is down this function must be called.*/
+        netif_set_down(&gnetif);
+    }
+
+    /* Set the link callback function, this function is called on change of link status*/
+    netif_set_link_callback(&gnetif, ETH_link_callback);
+
+    return 1;
+}
+
+/**
+* @brief  Initializes the lwIP stack
+* @param  None
+* @retval None
+*/
+uint32_t NetWork_Init_no_os(void)
 {
     uint32_t EthStatus = 0;
 
@@ -132,7 +197,7 @@ uint32_t NetWork_Init(void)
 
     The init function pointer must point to a initialization function for
     your ethernet netif interface. The following code illustrates it's use.*/
-    netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, &ethernetif_init, &ethernet_input);
+    netif_add(&gnetif, &ipaddr, &netmask, &gw, NULL, ethernetif_init, ethernet_input);
 
     /*  Registers the default network interface.*/
     netif_set_default(&gnetif);
