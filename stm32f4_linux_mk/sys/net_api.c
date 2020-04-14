@@ -239,6 +239,11 @@ void LwIP_Pkt_Handle(void)
     ethernetif_input(&gnetif);
 }
 
+void LwIP_IRQ_Post(void)
+{
+    ethernetif_post(&gnetif);
+}
+
 /**
 * @brief  LwIP periodic tasks
 * @param  localtime the current LocalTime value

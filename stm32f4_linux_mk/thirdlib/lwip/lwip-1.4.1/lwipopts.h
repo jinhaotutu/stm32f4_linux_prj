@@ -126,7 +126,7 @@ a lot of data that needs to be copied, this should be set high. */
 /* Define LWIP_DHCP to 1 if you want DHCP configuration of
    interfaces. DHCP is not implemented in lwIP 0.5.1, however, so
    turning this on does currently not work. */
-#define LWIP_DHCP               1
+#define LWIP_DHCP               0
 
 
 /* ---------- UDP options ---------- */
@@ -219,6 +219,17 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 #define LWIP_SOCKET                     1
 #endif
 
+#if !NO_SYS
+#define TCPIP_THREAD_NAME              "TCP/IP"
+#define TCPIP_THREAD_STACKSIZE          1000
+#define TCPIP_MBOX_SIZE                 5
+#define DEFAULT_UDP_RECVMBOX_SIZE       2000
+#define DEFAULT_TCP_RECVMBOX_SIZE       2000
+#define DEFAULT_ACCEPTMBOX_SIZE         2000
+#define DEFAULT_THREAD_STACKSIZE        500
+#define TCPIP_THREAD_PRIO               (configMAX_PRIORITIES - 2)
+#define LWIP_COMPAT_MUTEX               1
+#endif
 
 /*
    ----------------------------------------

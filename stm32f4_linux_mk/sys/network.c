@@ -53,15 +53,13 @@ static void Eth_Link_Sta_Change(void)
 
 void ETH_IRQHandler(void)
 {
-    if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_R) == SET){
-        while(ETH_CheckFrameReceived()){
-            LwIP_Pkt_Handle();
-        }
+    if (ETH_GetDMAFlagStatus(ETH_DMA_IT_R) == SET){
+        LwIP_IRQ_Post();
 
         ETH_DMAClearITPendingBit(ETH_DMA_IT_R);
     }
 
-    if (IS_ETH_DMA_GET_IT(ETH_DMA_IT_NIS) == SET){
+    if (ETH_GetDMAFlagStatus(ETH_DMA_IT_NIS) == SET){
         Eth_Link_Sta_Change();
         ETH_DMAClearITPendingBit(ETH_DMA_IT_NIS);
     }

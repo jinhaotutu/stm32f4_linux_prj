@@ -65,6 +65,15 @@ extern ETH_DMADESCTypeDef  *DMARxDescToGet;
 /* Global pointer for last received frame infos */
 extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;
 
+#if NO_SYS
+static uint8_t eth_input_irq = false;
+#else
+#include "arch/sys_arch.h"
+static sys_sem_t eth_input_sem = NULL;
+#endif
+
+static void eth_input_thread(void *arg);
+
 /**
  * In this function, the hardware should be initialized.
  * Called from ethernetif_init().
@@ -113,6 +122,12 @@ static void low_level_init(struct netif *netif)
 #endif
 
    /* Note: TCP, UDP, ICMP checksum checking for received frame are enabled in DMA config */
+#if NO_SYS
+
+#else
+    sys_sem_new(&eth_input_sem, 0);
+    sys_thread_new("eth_input_thread", eth_input_thread, NULL, 1024*2, (configMAX_PRIORITIES - 1));
+#endif
 
   /* Enable MAC and DMA transmission and reception */
   ETH_Start();
@@ -327,6 +342,33 @@ err_t ethernetif_input(struct netif *netif)
     pbuf_free(p);
   }
   return err;
+}
+
+static struct netif *input_netif;
+err_t ethernetif_post(struct netif *netif)
+{
+    input_netif = netif;
+
+#if NO_SYS
+
+#else
+    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
+    // xSemaphoreGiveFromISR(eth_input_sem, &xHigherPriorityTaskWoken);
+    xSemaphoreGive(eth_input_sem);
+#endif
+}
+
+static void eth_input_thread(void *arg)
+{
+
+    while (1)
+    {
+        sys_arch_sem_wait(&eth_input_sem, 0);
+
+        while(ETH_CheckFrameReceived()){
+            ethernetif_input(input_netif);
+        }
+    }
 }
 
 /**

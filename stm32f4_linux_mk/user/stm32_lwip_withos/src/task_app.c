@@ -26,7 +26,6 @@
 
 /* Private variables ---------------------------------------------------------*/
 static TaskHandle_t task_led = NULL;
-static TaskHandle_t task_lwip = NULL;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -43,28 +42,15 @@ static void task_led_cb(void *p)
     log_d("%s", __FUNCTION__);
 
     while(1){
-        log_d("led on...");
-        LED1_ON;
-        vTaskDelay(2000);
+        // log_d("led on...");
+        // LED1_ON;
+        // vTaskDelay(1000);
 
-        log_d("led off...");
-        LED1_OFF;
-        vTaskDelay(2000);
-    }
-}
+        // log_d("led off...");
+        // LED1_OFF;
+        // vTaskDelay(1000);
 
-/**
-  * @note   task_led_cb
-  * @brief  This function is used to run app task
-  * @param  *p
-  * @retval None
-  */
-static void task_lwip_cb(void *p)
-{
-    log_d("%s", __FUNCTION__);
-
-    while(1){
-        LwIP_Periodic_Handle();
+        LwIP_IRQ_Post();
         vTaskDelay(100);
     }
 }
@@ -93,17 +79,6 @@ int app_task_init(void)
                             (void *         )NULL,
                             (UBaseType_t    )1,
                             (TaskHandle_t * )&task_led);
-
-    if (pdPASS != xReturn){
-        return -1;
-    }
-
-    xReturn = xTaskCreate(  (TaskFunction_t )task_lwip_cb,
-                            (const char *   )"task_lwip",
-                            (unsigned short )256,
-                            (void *         )NULL,
-                            (UBaseType_t    )1,
-                            (TaskHandle_t * )&task_lwip);
 
     if (pdPASS != xReturn){
         return -1;
