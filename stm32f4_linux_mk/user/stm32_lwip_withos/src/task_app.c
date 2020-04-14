@@ -42,16 +42,13 @@ static void task_led_cb(void *p)
     log_d("%s", __FUNCTION__);
 
     while(1){
-        // log_d("led on...");
-        // LED1_ON;
-        // vTaskDelay(1000);
+        log_d("led on...");
+        LED1_ON;
+        vTaskDelay(1000);
 
-        // log_d("led off...");
-        // LED1_OFF;
-        // vTaskDelay(1000);
-
-        LwIP_IRQ_Post();
-        vTaskDelay(100);
+        log_d("led off...");
+        LED1_OFF;
+        vTaskDelay(1000);
     }
 }
 

@@ -108,7 +108,7 @@ static void GPIO_Configuration(void)
   */
 static void NVIC_Configuration(void)
 {
-    NVIC_SetPriorityGrouping(NVIC_PriorityGroup_0);
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 }
 
 /**
@@ -192,21 +192,26 @@ void Sys_Config(void)
     /* system init */
     RCC_Configuration();
 
-    GPIO_Configuration();
-
     NVIC_Configuration();
+
+    GPIO_Configuration();
 
     USART_Configuration();
 
     SysTick_Configuration();
 
+    thirdlib_init();
+
     /* user init */
     delay_init();
 
+    log_i("***********STM32 System Config!***********");
+}
+
+void thirdlib_init(void)
+{
     /* third lib init */
     easy_logger_init();
-
-    log_i("***********STM32 System Config!***********");
 }
 
 /* Private typedef -----------------------------------------------------------*/
@@ -249,7 +254,7 @@ int fgetc(FILE *f)
 #endif
 
 #if (defined configGENERATE_RUN_TIME_STATS) && (configGENERATE_RUN_TIME_STATS == 1)
-#define USE_IRQ_TICK_CNT    0
+#define USE_IRQ_TICK_CNT    1
 #if USE_IRQ_TICK_CNT
 static uint64_t rtos_run_time_cnt = 0;
 
@@ -296,7 +301,7 @@ void rtos_sys_timer_init(void)
     NVIC_InitTypeDef NVIC_InitStructure;
 
     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 8;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
@@ -318,7 +323,7 @@ void rtos_sys_timer_init(void)
 uint32_t rtos_sys_cnt_get(void)
 {
 #if USE_IRQ_TICK_CNT
-    // return rtos_run_time_cnt;
+    return rtos_run_time_cnt;
 #else
     return TIM_GetCounter(TIM2);
 #endif

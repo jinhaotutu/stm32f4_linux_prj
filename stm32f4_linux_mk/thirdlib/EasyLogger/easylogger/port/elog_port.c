@@ -40,10 +40,12 @@ ElogErrCode elog_port_init(void) {
     ElogErrCode result = ELOG_NO_ERR;
 
     /* add your code here */
+#ifdef USE_OS
     log_mutex = xSemaphoreCreateMutex();
     if (log_mutex == NULL){
         result = ELOG_INIT_ERR;
     }
+#endif
 
     return result;
 }
@@ -70,7 +72,9 @@ void elog_port_output(const char *log, size_t size) {
 void elog_port_output_lock(void) {
 
     /* add your code here */
+#ifdef USE_OS
     xSemaphoreTake(log_mutex, portMAX_DELAY);
+#endif
 }
 
 /**
@@ -79,7 +83,9 @@ void elog_port_output_lock(void) {
 void elog_port_output_unlock(void) {
 
     /* add your code here */
+#ifdef USE_OS
     xSemaphoreGive(log_mutex);
+#endif
 }
 
 /**

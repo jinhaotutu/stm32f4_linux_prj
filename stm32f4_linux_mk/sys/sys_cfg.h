@@ -85,6 +85,14 @@ void delay_ms(uint32_t nTime);
   */
 void delay_us(uint32_t nTime);
 
+/**
+  * @note   thirdlib_init
+  * @brief  None
+  * @param  None
+  * @retval None
+  */
+void thirdlib_init(void);
+
 #ifdef __cplusplus
 }
 #endif

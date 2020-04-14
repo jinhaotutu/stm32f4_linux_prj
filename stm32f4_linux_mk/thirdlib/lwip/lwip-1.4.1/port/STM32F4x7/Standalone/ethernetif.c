@@ -352,9 +352,7 @@ err_t ethernetif_post(struct netif *netif)
 #if NO_SYS
 
 #else
-    portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
-    // xSemaphoreGiveFromISR(eth_input_sem, &xHigherPriorityTaskWoken);
-    xSemaphoreGive(eth_input_sem);
+    xSemaphoreGiveFromISR(eth_input_sem, NULL);
 #endif
 }
 

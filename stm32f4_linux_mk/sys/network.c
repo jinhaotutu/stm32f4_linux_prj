@@ -204,10 +204,13 @@ static uint32_t ETH_MACDMA_Config(void)
     /* Configure Ethernet */
     EthStatus = ETH_Init(&ETH_InitStructure, PHY_ADDRESS);
 
-
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = ETH_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+#if NO_SYS
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
+#else
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY;
+#endif
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
