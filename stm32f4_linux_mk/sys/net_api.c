@@ -236,7 +236,9 @@ void update_lwip_tick(uint32_t tick)
 void LwIP_Pkt_Handle(void)
 {
     /* Read a received packet from the Ethernet buffers and send it to the lwIP for handling */
-    ethernetif_input(&gnetif);
+    while(ETH_CheckFrameReceived()){
+        ethernetif_input(&gnetif);
+    }
 }
 
 void LwIP_IRQ_Post(void)

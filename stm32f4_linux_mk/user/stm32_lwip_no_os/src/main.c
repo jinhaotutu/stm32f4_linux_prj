@@ -46,6 +46,8 @@ int main(void)
 
     while(1)
     {
+        LwIP_Pkt_Handle();
+
         /* handle periodic timers for LwIP*/
         LwIP_Periodic_Handle();
     }

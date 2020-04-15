@@ -46,9 +46,14 @@ INC += -I../thirdlib/lwip/lwip-1.4.1/src/include/ipv4
 INC += -I../thirdlib/lwip/lwip-1.4.1/src/include
 INC += -I../thirdlib/lwip/lwip-1.4.1
 
-#user
-C_SRCS += $(wildcard ../user/${APP_NAME}/src/*.c)
-INC += -I../user/${APP_NAME}/inc
+#user (add user all file)
+APPS_PATH = $(shell ls -R ./../user/${APP_NAME}/src | grep ^\./.*:$ | awk '{gsub(":","/*.c");sub("./","");print}')
+# $(info ******* APPS_PATH : $(APPS_PATH))
+APPS_PATH_INC = $(shell ls -R ./../user/${APP_NAME} | grep ^\./.*:$ | awk '{gsub(":","");sub("./","-I");print}')
+# $(info ******* APPS_PATH_INC : $(APPS_PATH_INC))
+
+C_SRCS += $(wildcard $(APPS_PATH))
+INC += $(APPS_PATH_INC)
 
 
 OBJS += $(patsubst %.c, ./output/%.o, $(notdir ${C_SRCS}))

@@ -66,7 +66,6 @@ extern ETH_DMADESCTypeDef  *DMARxDescToGet;
 extern ETH_DMA_Rx_Frame_infos *DMA_RX_FRAME_infos;
 
 #if NO_SYS
-static uint8_t eth_input_irq = false;
 #else
 #include "arch/sys_arch.h"
 static sys_sem_t eth_input_sem = NULL;
@@ -123,7 +122,6 @@ static void low_level_init(struct netif *netif)
 
    /* Note: TCP, UDP, ICMP checksum checking for received frame are enabled in DMA config */
 #if NO_SYS
-
 #else
     sys_sem_new(&eth_input_sem, 0);
     sys_thread_new("eth_input_thread", eth_input_thread, NULL, 1024*2, (configMAX_PRIORITIES - 1));
@@ -350,15 +348,14 @@ err_t ethernetif_post(struct netif *netif)
     input_netif = netif;
 
 #if NO_SYS
-
 #else
     xSemaphoreGiveFromISR(eth_input_sem, NULL);
 #endif
 }
-
+#if NO_SYS
+#else
 static void eth_input_thread(void *arg)
 {
-
     while (1)
     {
         sys_arch_sem_wait(&eth_input_sem, 0);
@@ -368,6 +365,7 @@ static void eth_input_thread(void *arg)
         }
     }
 }
+#endif
 
 /**
  * Should be called at the beginning of the program to set up the
