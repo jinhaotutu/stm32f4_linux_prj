@@ -228,12 +228,12 @@ int __io_putchar(int ch)
 
 __attribute__((weak)) int _write(int file, char *ptr, int len)
 {
-	int DataIdx;
-	for (DataIdx = 0; DataIdx < len; DataIdx++)
-	{
-		__io_putchar(*ptr++);
-	}
-	return len;
+    int DataIdx;
+    for (DataIdx = 0; DataIdx < len; DataIdx++)
+    {
+        __io_putchar(*ptr++);
+    }
+    return len;
 }
 #else
 int fputc(int ch, FILE *f)

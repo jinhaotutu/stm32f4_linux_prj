@@ -36,6 +36,7 @@
 /* lwip */
 #include "stm32f4x7_eth.h"
 #include "lwipopts.h"
+#include "lwip/sockets.h"
 
 #ifdef __cplusplus
 extern "C" {

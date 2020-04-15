@@ -34,20 +34,25 @@
 #include "lwip/udp.h"
 #include "netif/etharp.h"
 #include "lwip/dhcp.h"
+#include "lwip/inet.h"
 #include "Standalone/ethernetif.h"
 
 #include "stm_config.h"
 
 /* Private typedef -----------------------------------------------------------*/
+typedef enum {
+    DHCP_START,
+    DHCP_WAIT_ADDRESS,
+    DHCP_ADDRESS_ASSIGNED,
+    DHCP_TIMEOUT,
+    DHCP_LINK_DOWN,
+}DHCP_STA;
+
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static struct netif gnetif;
-
-static uint32_t TCPTimer = 0;
-static uint32_t ARPTimer = 0;
-static uint32_t IPaddress = 0;
 
 static __IO uint32_t localtime = 0;
 
@@ -101,6 +106,87 @@ void ETH_link_callback(struct netif *netif)
 }
 
 /**
+  * @brief  dhcp
+  * @param  None
+  * @retval None
+  */
+static void LwIP_DHCP_task(void *p)
+{
+    struct ip_addr ipaddr;
+    struct ip_addr netmask;
+    struct ip_addr gw;
+    uint32_t IPaddress;
+
+    DHCP_STA dhcp_status = DHCP_START;
+
+    while(1)
+    {
+        switch (dhcp_status)
+        {
+            case DHCP_START:
+                dhcp_start(&gnetif);
+                /* IP address should be set to 0
+                every time we want to assign a new DHCP address */
+                IPaddress = 0;
+                dhcp_status = DHCP_WAIT_ADDRESS;
+
+                break;
+
+            case DHCP_WAIT_ADDRESS:
+                /* Read the new IP address */
+                IPaddress = gnetif.ip_addr.addr;
+
+                if (IPaddress!=0)
+                {
+                    dhcp_status = DHCP_ADDRESS_ASSIGNED;
+
+                    /* Stop DHCP */
+                    dhcp_stop(&gnetif);
+
+                    log_i("use dhcp ip");
+                    log_i("got ipadder: %s", inet_ntoa(gnetif.ip_addr.addr));
+                    log_i("got netmask: %s", inet_ntoa(gnetif.netmask.addr));
+                    log_i("got gwadder: %s", inet_ntoa(gnetif.gw.addr));
+
+                    vTaskDelete(NULL);
+                }
+                else
+                {
+                    /* DHCP timeout */
+                    if (gnetif.dhcp->tries > 4)
+                    {
+                        dhcp_status = DHCP_TIMEOUT;
+
+                        /* Stop DHCP */
+                        dhcp_stop(&gnetif);
+
+                        /* Static address used */
+                        IP4_ADDR(&ipaddr, 192, 168, 1, 88);
+                        IP4_ADDR(&netmask, 255, 255, 255, 0);
+                        IP4_ADDR(&gw, 192, 168, 1, 1);
+                        netif_set_addr(&gnetif, &ipaddr , &netmask, &gw);
+
+                        log_i("use static ip");
+                        log_i("got ipadder: %s", inet_ntoa(gnetif.ip_addr.addr));
+                        log_i("got netmask: %s", inet_ntoa(gnetif.netmask.addr));
+                        log_i("got gwadder: %s", inet_ntoa(gnetif.gw.addr));
+
+                        vTaskDelete(NULL);
+                    }
+                }
+
+                break;
+
+            default:
+                break;
+        }
+
+        /* wait 250 ms */
+        vTaskDelay(250);
+    }
+}
+
+/**
 * @brief  Initializes the lwIP stack
 * @param  None
 * @retval None
@@ -109,19 +195,15 @@ uint32_t NetWork_Init(void)
 {
     uint32_t EthStatus = 0;
 
-    struct ip_addr ipaddr;
-    struct ip_addr netmask;
-    struct ip_addr gw;
+    struct ip_addr ipaddr={0};
+    struct ip_addr netmask={0};
+    struct ip_addr gw={0};
 
     /* eth init */
     EthStatus = ETH_BSP_Config();
     log_d("EthStatus:0x%02x", EthStatus);
 
     tcpip_init(NULL, NULL);
-
-    IP4_ADDR(&ipaddr, 192, 168, 1, 88);
-    IP4_ADDR(&netmask, 255, 255, 255, 0);
-    IP4_ADDR(&gw, 192, 168, 1, 1);
 
     /* - netif_add(struct netif *netif, struct ip_addr *ipaddr,
     struct ip_addr *netmask, struct ip_addr *gw,
@@ -148,6 +230,8 @@ uint32_t NetWork_Init(void)
 
         /* When the netif is fully configured this function must be called.*/
         netif_set_up(&gnetif);
+
+        sys_thread_new("dhcp", LwIP_DHCP_task, NULL, 1024, (configMAX_PRIORITIES - 2));
     }
     else
     {
@@ -253,6 +337,9 @@ void LwIP_IRQ_Post(void)
 */
 void LwIP_Periodic_Handle(void)
 {
+    static uint32_t ARPTimer = 0;
+    static uint32_t TCPTimer = 0;
+
 #if LWIP_TCP
     /* TCP periodic process every 250 ms */
     if (localtime - TCPTimer >= TCP_TMR_INTERVAL)
