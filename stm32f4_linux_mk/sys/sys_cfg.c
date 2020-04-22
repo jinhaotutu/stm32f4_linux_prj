@@ -168,6 +168,7 @@ static void easy_logger_init(void)
     printf("\r\n\r\n");
     /* initialize EasyLogger */
     elog_init();
+    // elog_set_text_color_enabled(true);
     /* set EasyLogger log format */
     elog_set_fmt(ELOG_LVL_ASSERT, ELOG_FMT_ALL);
     elog_set_fmt(ELOG_LVL_ERROR, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
