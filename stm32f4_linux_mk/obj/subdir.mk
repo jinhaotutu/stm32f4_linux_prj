@@ -58,6 +58,10 @@ INC += -I../thirdlib/paho.mqtt/MQTTPacket/src
 INC += -I../thirdlib/paho.mqtt/MQTTClient-C/src
 INC += -I../thirdlib/paho.mqtt/MQTTClient-C/src/port
 
+# mongoose ****
+C_SRCS += $(wildcard ../thirdlib/mongoose/*.c)
+INC += -I../thirdlib/mongoose
+
 #user (add user all file)
 APPS_PATH = $(shell ls -R ./../user/${APP_NAME}/src | grep ^\./.*:$ | awk '{gsub(":","/*.c");sub("./","");print}')
 # $(info ******* APPS_PATH : $(APPS_PATH))

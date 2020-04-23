@@ -5,24 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) 启动",
-            "type": "cppdbg",
+            "name": "stm32-jlink",
+            "type": "cortex-debug",
             "request": "launch",
-            "program": "输入程序名称，例如 ${workspaceFolder}/a.exe",
-            "args": [],
-            "stopAtEntry": false,
+            "servertype": "jlink",
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "miDebuggerPath": "/path/to/gdb",
-            "setupCommands": [
-                {
-                    "description": "为 gdb 启用整齐打印",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ]
+            "executable": "${workspaceFolder}/stm32f4_linux_mk/obj/stm32f4-mk.elf",
+            "device": "STM32F407ZG",
+            "interface": "swd",
+            "preLaunchTask": "only_build",
+            "armToolchainPath": "${workspaceFolder}/stm32f4_linux_mk/obj/tools/gcc-arm-none-eabi/bin/",
+            "ipAddress": null,
+            "serialNumber": null,
         }
     ]
 }
