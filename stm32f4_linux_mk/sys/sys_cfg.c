@@ -168,6 +168,7 @@ static void easy_logger_init(void)
     printf("\r\n\r\n");
     /* initialize EasyLogger */
     elog_init();
+    elog_set_text_color_enabled(true);
     /* set EasyLogger log format */
     elog_set_fmt(ELOG_LVL_ASSERT, ELOG_FMT_ALL);
     elog_set_fmt(ELOG_LVL_ERROR, ELOG_FMT_ALL & ~(ELOG_FMT_FUNC | ELOG_FMT_T_INFO | ELOG_FMT_P_INFO));
@@ -254,9 +255,9 @@ int fgetc(FILE *f)
 #endif
 
 #if (defined configGENERATE_RUN_TIME_STATS) && (configGENERATE_RUN_TIME_STATS == 1)
-#define USE_IRQ_TICK_CNT    1
+#define USE_IRQ_TICK_CNT    0
 #if USE_IRQ_TICK_CNT
-static uint64_t rtos_run_time_cnt = 0;
+static uint32_t rtos_run_time_cnt = 0;
 
 /**
   * @note   TIM2_IRQHandler
@@ -268,8 +269,9 @@ void TIM2_IRQHandler(void)
 {
     if(TIM_GetITStatus(TIM2,TIM_IT_Update) == SET){
         rtos_run_time_cnt++;
+
+        TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
     }
-    TIM_ClearITPendingBit(TIM2,TIM_IT_Update);
 }
 #endif
 
@@ -301,7 +303,7 @@ void rtos_sys_timer_init(void)
     NVIC_InitTypeDef NVIC_InitStructure;
 
     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 8;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);

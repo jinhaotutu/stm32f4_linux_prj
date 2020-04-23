@@ -4,31 +4,48 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "编译",
+            "label": "build",
             "type": "shell",
-            "command": "sh build.sh",
-            "problemMatcher": [],
+            "command": "sh",
+            "args": [
+                "${workspaceFolder}/stm32f4_linux_mk/user/build.sh",
+                "stm32_single",
+                "1.0.0",
+                "loadbin",
+            ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
-        },
-        {
-            "label": "编译并下载",
-            "type": "shell",
-            "command": "make -j4 && make update",
+            },
             "problemMatcher": []
         },
         {
-            "label": "重新编译",
+            "label": "only_build",
             "type": "shell",
-            "command": "make clean && make -j6",
+            "command": "sh",
+            "args": [
+                "${workspaceFolder}/stm32f4_linux_mk/user/build.sh",
+                "stm32_single",
+                "1.0.0"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": []
         },
         {
-            "label": "复位设备",
+            "label": "download",
             "type": "shell",
-            "command": "STM32_Programmer_CLI -c port=SWD -hardRst",
+            "command": "sh",
+            "args": [
+                "${workspaceFolder}/stm32f4_linux_mk/user/load.sh",
+                "${workspaceFolder}/stm32f4_linux_mk/user/stm32_single/output/1.0.0/stm32_single_app_v1.0.0.bin"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": []
         }
     ]

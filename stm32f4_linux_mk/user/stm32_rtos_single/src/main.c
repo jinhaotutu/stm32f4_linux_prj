@@ -75,7 +75,7 @@ void rtos_init(void)
     /* first creat task in this 创建rtos第一个任务，用于创建其他任务 */
     xReturn = xTaskCreate(  (TaskFunction_t )creat_task,
                             (const char *   )"creat_task",
-                            (unsigned short )256,
+                            (unsigned short )1024,
                             (void *         )NULL,
                             (UBaseType_t    )2,
                             (TaskHandle_t * )&xTask_creat);

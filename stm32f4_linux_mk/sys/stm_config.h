@@ -32,6 +32,8 @@
 #include "task.h"
 #include "semphr.h"
 #include "queue.h"
+#include "event_groups.h"
+#include "timers.h"
 
 /* lwip */
 #include "stm32f4x7_eth.h"
