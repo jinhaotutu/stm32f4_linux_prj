@@ -186,6 +186,17 @@ static void LwIP_DHCP_task(void *p)
     }
 }
 
+uint8_t get_net_status(void)
+{
+    uint8_t net_status = 0;
+
+    if(gnetif.ip_addr.addr != 0){
+        net_status = 6;
+    }
+
+    return net_status;
+}
+
 /**
 * @brief  Initializes the lwIP stack
 * @param  None
