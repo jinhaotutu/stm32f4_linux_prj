@@ -54,7 +54,7 @@ typedef enum {
 /* Private variables ---------------------------------------------------------*/
 static struct netif gnetif;
 
-static __IO uint32_t localtime = 0;
+static uint32_t sys_time = 0;
 
 /* Private functions ---------------------------------------------------------*/
 
@@ -309,7 +309,7 @@ uint32_t NetWork_Init_no_os(void)
 
 void update_lwip_tick(uint32_t tick)
 {
-    localtime += tick;
+    sys_time += tick;
 }
 
 /**
@@ -342,17 +342,17 @@ void LwIP_Periodic_Handle(void)
 
 #if LWIP_TCP
     /* TCP periodic process every 250 ms */
-    if (localtime - TCPTimer >= TCP_TMR_INTERVAL)
+    if (sys_time - TCPTimer >= TCP_TMR_INTERVAL)
     {
-        TCPTimer =  localtime;
+        TCPTimer =  sys_time;
         tcp_tmr();
     }
 #endif
 
     /* ARP periodic process every 5s */
-    if ((localtime - ARPTimer) >= ARP_TMR_INTERVAL)
+    if ((sys_time - ARPTimer) >= ARP_TMR_INTERVAL)
     {
-        ARPTimer =  localtime;
+        ARPTimer =  sys_time;
         etharp_tmr();
     }
 }
