@@ -1,90 +1,86 @@
 /* Standard includes. */
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "mq_api.h"
 
-/* FreeRTOS includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "stm_config.h"
 
-/* FreeRTOS+TCP includes. */
+#define MQTT_BUF_SIZE       1024
 
-#include "MQTTClient.h"
-
-#define MQTT_URL "tushuguan.ltd"
-
-
-void messageArrived(MessageData* data)
+int mqtt_client_start(MQ_DEFS* mq_params)
 {
-	printf("Message arrived on topic %.*s: %.*s\n", data->topicName->lenstring.len, data->topicName->lenstring.data,
-		data->message->payloadlen, data->message->payload);
+    int ret = -1;
+
+    NetworkInit(&(mq_params->network));
+
+    mq_params->send_buf = pvPortMalloc(MQTT_BUF_SIZE);
+    if (NULL == mq_params->send_buf){
+        return -1;
+    }
+    memset(mq_params->send_buf, 0, MQTT_BUF_SIZE);
+
+    mq_params->recv_buf = pvPortMalloc(MQTT_BUF_SIZE);
+    if (NULL == mq_params->recv_buf){
+        return -1;
+    }
+    memset(mq_params->recv_buf, 0, MQTT_BUF_SIZE);
+
+    MQTTClientInit(&(mq_params->client), &(mq_params->network), 30000, mq_params->send_buf, MQTT_BUF_SIZE, mq_params->recv_buf, MQTT_BUF_SIZE);
+
+    ret = NetworkConnect(&(mq_params->network), mq_params->mq_url, mq_params->port);
+    if (ret != 0){
+        log_e("Return code from network connect is %d\n", ret);
+        return ret;
+    }
+
+    ret = MQTTConnect(&(mq_params->client), &(mq_params->con));
+    if (ret != 0){
+        log_e("Return code from MQTT connect is %d\n", ret);
+        return ret;
+    }
+
+    log_i("MQTT Connected\n");
+
+    return 0;
 }
 
-static void prvMQTTEchoTask(void *pvParameters)
+int mqtt_client_stop(MQ_DEFS* mq_params)
 {
-	/* connect to m2m.eclipse.org, subscribe to a topic, send and receive messages regularly every 1 sec */
-	MQTTClient client;
-	Network network;
-	unsigned char sendbuf[80], readbuf[80];
-	int rc = 0, 
-		count = 0;
-	MQTTPacket_connectData connectData = MQTTPacket_connectData_initializer;
+    vPortFree(mq_params->send_buf);
+    mq_params->send_buf = NULL;
+    vPortFree(mq_params->recv_buf);
+    mq_params->recv_buf = NULL;
+}
 
-	pvParameters = 0;
-	NetworkInit(&network);
-	MQTTClientInit(&client, &network, 30000, sendbuf, sizeof(sendbuf), readbuf, sizeof(readbuf));
+int mqtt_sub_topic(MQTTClient *client, uint8_t *topic, messageHandler recv_cb)
+{
+    int ret = -1;
 
-	char* address = MQTT_URL;
-	if ((rc = NetworkConnect(&network, address, 11883)) != 0)
-		printf("Return code from network connect is %d\n", rc);
+    ret = MQTTSubscribe(client, topic, 1, recv_cb);
+    if (ret != 0){
+        log_e("Return code from MQTT subscribe is %d\n", ret);
+        return ret;
+    }
 
-	connectData.MQTTVersion = 3;
-	connectData.clientID.cstring = "FreeRTOS_sample";
+    log_i("subscribe [%s] succeed", topic);
 
-	if ((rc = MQTTConnect(&client, &connectData)) != 0)
-		printf("Return code from MQTT connect is %d\n", rc);
-	else
-		printf("MQTT Connected\n");
+    return 0;
+}
 
-	if ((rc = MQTTSubscribe(&client, "FreeRTOS/sample/b", 0, messageArrived)) != 0)
-		printf("Return code from MQTT subscribe is %d\n", rc);
+int mqtt_pub_topic(MQTTClient *client, uint8_t *topic, MQTTMessage *pub_data)
+{
+    int ret = -1;
 
-	while (++count)
-	{
-		MQTTMessage message;
-		char payload[30];
+    ret = MQTTPublish(client, topic, pub_data);
+    if (ret != 0){
+        log_e("Return code from MQTT publish is %d\n", ret);
+        return ret;
+    }
 
-		message.qos = 1;
-		message.retained = 0;
-		message.payload = payload;
-		sprintf(payload, "message number %d", count);
-		message.payloadlen = strlen(payload);
+    log_i("publish [%s] succeed", topic);
 
-		if ((rc = MQTTPublish(&client, "FreeRTOS/sample/a", &message)) != 0)
-			printf("Return code from MQTT publish is %d\n", rc);
-
-		// if ((rc = MQTTYield(&client, 1000)) != 0)
-		// 	printf("Return code from yield is %d\n", rc);
-
-        vTaskDelay(2000);
-	}
-
-	/* do not return */
+    return 0;
 }
 
 
-void vStartMQTTTasks(uint16_t usTaskStackSize, UBaseType_t uxTaskPriority)
-{
-	BaseType_t x = 0L;
-
-	xTaskCreate(prvMQTTEchoTask,	/* The function that implements the task. */
-			"MQTTEcho0",			/* Just a text name for the task to aid debugging. */
-			usTaskStackSize,	/* The stack size is defined in FreeRTOSIPConfig.h. */
-			(void *)x,		/* The task parameter, not used in this case. */
-			uxTaskPriority,		/* The priority assigned to the task is defined in FreeRTOSConfig.h. */
-			NULL);				/* The task handle is not used. */
-}
 /*-----------------------------------------------------------*/
 
 

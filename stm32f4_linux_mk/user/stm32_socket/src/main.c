@@ -4,7 +4,7 @@
   * @author  : Tuu-图图
   * @version : 1.0.0
   * @date    : 2020-04-01
-  * @brief   : stm32f407+FreeRTOS示例工程
+  * @brief   : stm32f407 socket工程
   ******************************************************************************
   * @lasteditors  : Tuu-图图
   * @lasteditTime : 2020-04-01
@@ -49,7 +49,7 @@ static void creat_task(void *p)
 }
 
 /**
-  * @note   This function is used to creat app task and delect self.
+  * @note   rtos_init.
   * @brief  None
   * @param  *p
   * @retval None
@@ -65,7 +65,7 @@ void rtos_init(void)
                             (const char *   )"creat_task",
                             (unsigned short )1024,
                             (void *         )NULL,
-                            (UBaseType_t    )2,
+                            (UBaseType_t    )RTOS_PRIORITY_HIGHEST,
                             (TaskHandle_t * )&xTask_creat);
 
     if (pdPASS != xReturn){

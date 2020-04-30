@@ -1,10 +1,10 @@
 /**
   *****************************************************************************
-  * @file    : stm_config.h
+  * @file    : network.h
   * @author  : Tuu-图图
   * @version : 1.0.0
   * @date    : 2020-04-01
-  * @brief   : Header for stm32f4 config
+  * @brief   : Header for network config
   ******************************************************************************
   * @lasteditors  : Tuu-图图
   * @lasteditTime : 2020-04-01
@@ -15,30 +15,12 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef  STM32_CONFIG_H
-#define  STM32_CONFIG_H
+#ifndef  MQ_API_H
+#define  MQ_API_H
 
 /* Includes -------------------------------------------------------------------*/
-#include <stdio.h>
-#include <string.h>
-#include "stm32f4xx.h"
-#include "sys_cfg.h"
-
-/* third lib include */
-#include <elog.h>
-
-/* rtos */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "semphr.h"
-#include "queue.h"
-#include "event_groups.h"
-#include "timers.h"
-
-/* lwip */
-#include "stm32f4x7_eth.h"
-#include "lwipopts.h"
-#include "lwip/sockets.h"
+#include "MQTTClient.h"
+#include "MQTTConnect.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,32 +39,33 @@ extern "C" {
   */
 
 /* Defines --------------------------------------------------------------------*/
-#ifndef __FILENAME__
-#define __FILENAME__ (strrchr(__FILE__, '/') ? (strrchr(__FILE__, '/') + 1):__FILE__)
-#endif
-#define os_printf(_fmt_, ...) \
-        printf("[log ] %s:%d | "_fmt_"\r\n", __FILENAME__, __LINE__, ##__VA_ARGS__)
-
-/* user define */
-#define RTOS_PRIORITY_HIGHEST       (10)
-#define RTOS_PRIORITY_LEVEL_1ST     (9)
-#define RTOS_PRIORITY_LEVEL_2ST     (8)
-#define RTOS_PRIORITY_LEVEL_3ST     (7)
-#define RTOS_PRIORITY_LEVEL_4ST     (6)
-#define RTOS_PRIORITY_LEVEL_5ST     (5)
 
 /* Types ----------------------------------------------------------------------*/
-
+typedef struct{
+    /* data */
+    uint8_t *mq_url;
+    uint16_t port;
+    uint8_t *send_buf;
+    uint8_t *recv_buf;
+    MQTTPacket_connectData con;
+    MQTTClient client;
+    Network network;
+}MQ_DEFS;
 
 /* Variables ------------------------------------------------------------------*/
 
 
 /* Functions ------------------------------------------------------------------*/
+int mqtt_client_start(MQ_DEFS* mq_params);
+int mqtt_client_stop(MQ_DEFS* mq_params);
+int mqtt_sub_topic(MQTTClient *client, uint8_t *topic, messageHandler recv_cb);
+int mqtt_pub_topic(MQTTClient *client, uint8_t *topic, MQTTMessage *pub_data);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* STM32_CONFIG_H */
+#endif /* MQ_API_H */
 
 /************************ (C) COPYRIGHT Tuu ********END OF FILE****************/
+

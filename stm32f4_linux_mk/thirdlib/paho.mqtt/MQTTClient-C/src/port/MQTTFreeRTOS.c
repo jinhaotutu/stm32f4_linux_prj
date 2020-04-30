@@ -163,7 +163,7 @@ int NetworkConnect(Network* n, char* addr, int port)
     }
 
     for(int i=0; host->h_addr_list[i]; i++){
-        printf("IP addr %d: %s\n", i+1, inet_ntoa( *(struct in_addr*)host->h_addr_list[i] ) );
+        printf("IP addr %d: %s\r\n", i+1, inet_ntoa( *(struct in_addr*)host->h_addr_list[i] ) );
     }
 
     dns_ip = *(struct in_addr*)host->h_addr_list[0];
@@ -182,7 +182,7 @@ int NetworkConnect(Network* n, char* addr, int port)
         goto exit;
 	}
 
-    return 1;
+    return 0;
 
 exit:
 	return retVal;

@@ -240,10 +240,12 @@ The STM32F4x7 allows computing and verifying the IP, UDP, TCP and ICMP checksums
 */
 #define LWIP_DEBUG                      1
 
-#define LWIP_TIMEVAL_PRIVATE            0
+#define LWIP_TIMEVAL_PRIVATE            1
 #if !LWIP_TIMEVAL_PRIVATE
 #include <sys/time.h>
 #endif
+
+#define MEMP_NUM_NETCONN                6
 
 /**
  * LWIP_DBG_MIN_LEVEL: After masking, the value of the debug is

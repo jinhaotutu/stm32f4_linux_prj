@@ -1,6 +1,6 @@
 /**
   *****************************************************************************
-  * @file    : task_app.c
+  * @file    : drv_init.c
   * @author  : Tuu-图图
   * @version : 1.0.0
   * @date    : 2020-04-01
@@ -32,7 +32,7 @@ static TaskHandle_t task_app = NULL;
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @note   task_led_cb
+  * @note   app_user
   * @brief  This function is used to run app task
   * @param  *p
   * @retval None
@@ -67,7 +67,7 @@ int app_task_init(void)
                             (const char *   )"app_user",
                             (unsigned short )2048,
                             (void *         )NULL,
-                            (UBaseType_t    )1,
+                            (UBaseType_t    )RTOS_PRIORITY_LEVEL_1ST,
                             (TaskHandle_t * )&task_app);
 
     if (pdPASS != xReturn){

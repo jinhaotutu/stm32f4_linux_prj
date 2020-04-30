@@ -1,6 +1,6 @@
 /**
   *****************************************************************************
-  * @file    : task_app.c
+  * @file    : app_init.c
   * @author  : Tuu-图图
   * @version : 1.0.0
   * @date    : 2020-04-01
@@ -32,7 +32,7 @@ static TaskHandle_t task_app = NULL;
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @note   task_led_cb
+  * @note   app_user
   * @brief  This function is used to run app task
   * @param  *p
   * @retval None
