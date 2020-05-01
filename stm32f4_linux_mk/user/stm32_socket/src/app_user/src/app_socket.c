@@ -26,6 +26,8 @@
 
 #define TCP_SERVER_MAX_CON      MEMP_NUM_NETCONN
 
+#define SOCKET_DATA_SIZE        1024
+
 /* Private typedef -----------------------------------------------------------*/
 
 /* Private macro -------------------------------------------------------------*/
@@ -98,7 +100,7 @@ static void tcp_server_cb(void *p)
     int client_len = sizeof(struct sockaddr_in);
     bzero(&client_addr, client_len);
 
-    uint8_t *tcp_recv_buf = pvPortMalloc(1024);
+    uint8_t *tcp_recv_buf = pvPortMalloc(SOCKET_DATA_SIZE);
     if (tcp_recv_buf == NULL){
         close(server_fd);
         log_e("malloc error");
@@ -156,8 +158,8 @@ static void tcp_server_cb(void *p)
                             }
                         }
                     }else if (fds[i] >= 0 && FD_ISSET(fds[i], &refset)){
-                        memset(tcp_recv_buf, 0, 1024);
-                        int num = recv(fds[i], tcp_recv_buf, sizeof(tcp_recv_buf), 0);
+                        memset(tcp_recv_buf, 0, SOCKET_DATA_SIZE);
+                        int num = recv(fds[i], tcp_recv_buf, SOCKET_DATA_SIZE, 0);
                         if(num <= 0){
                             close(fds[i]);
                             fds[i] = -1;
@@ -207,7 +209,7 @@ static void tcp_client_cb(void *p)
         server_addr.sin_port = htons(5551);
         server_addr.sin_addr.s_addr = inet_addr("192.168.1.66");
 
-        uint8_t *recv_buf = pvPortMalloc(1024);
+        uint8_t *recv_buf = pvPortMalloc(SOCKET_DATA_SIZE);
         if (recv_buf == NULL){
             log_e("malloc error");
             close(client_fd);
@@ -235,9 +237,9 @@ static void tcp_client_cb(void *p)
 
                 log_i("client send succeed");
 
-                memset(recv_buf, 0, 1024);
+                memset(recv_buf, 0, SOCKET_DATA_SIZE);
 
-                num = recv(client_fd, recv_buf, 1024, 0);
+                num = recv(client_fd, recv_buf, SOCKET_DATA_SIZE, 0);
                 if (num < 0){
                     log_e("recv error");
                     break;
@@ -298,7 +300,7 @@ static void udp_server_cb(void *p)
     int client_len = sizeof(struct sockaddr_in);
     bzero(&client_addr, client_len);
 
-    uint8_t *recv_buf  = pvPortMalloc(1024);
+    uint8_t *recv_buf  = pvPortMalloc(SOCKET_DATA_SIZE);
     if (recv_buf == NULL){
         close(server_fd);
         log_e("malloc error");
@@ -323,8 +325,8 @@ static void udp_server_cb(void *p)
                 break;
 
             default:
-                memset(recv_buf, 0, 1024);
-                int num = recvfrom(server_fd, recv_buf, sizeof(recv_buf), 0, (struct sockaddr*)&client_addr, &client_len);
+                memset(recv_buf, 0, SOCKET_DATA_SIZE);
+                int num = recvfrom(server_fd, recv_buf, SOCKET_DATA_SIZE, 0, (struct sockaddr*)&client_addr, &client_len);
                 if(num < 0){
                     close(server_fd);
                     break;
@@ -375,9 +377,9 @@ static void udp_client_cb(void *p)
         bzero(&server_addr, sizeof(server_addr));
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(5554);
-        server_addr.sin_addr.s_addr = inet_addr("192.168.1.66");//htonl(IPADDR_BROADCAST);//
+        server_addr.sin_addr.s_addr = htonl(IPADDR_BROADCAST);//inet_addr("192.168.1.66");
 
-        uint8_t *recv_buf = pvPortMalloc(1024);
+        uint8_t *recv_buf = pvPortMalloc(SOCKET_DATA_SIZE);
         if (recv_buf == NULL){
             close(client_fd);
             log_e("malloc error");
@@ -387,7 +389,7 @@ static void udp_client_cb(void *p)
         while(1){
             vTaskDelay(1000);
 
-            uint8_t *msg = "udp client -----> hello world!";
+            uint8_t *msg = "udp client -----> hello world!\r\n";
             int num = sendto(client_fd, msg, strlen(msg), 0, (struct sockaddr*)&server_addr, server_len);
             if (num < 0){
                 log_e("send error");
@@ -396,9 +398,9 @@ static void udp_client_cb(void *p)
 
             log_i("client send succeed");
 
-            memset(recv_buf, 0, 1024);
+            memset(recv_buf, 0, SOCKET_DATA_SIZE);
 
-            num = recvfrom(client_fd, recv_buf, 1024, 0, (struct sockaddr*)&server_addr, &server_len);
+            num = recvfrom(client_fd, recv_buf, SOCKET_DATA_SIZE, 0, (struct sockaddr*)&server_addr, &server_len);
             if (num < 0){
                 log_e("recv error");
                 break;

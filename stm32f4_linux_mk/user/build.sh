@@ -39,10 +39,10 @@ fi
 cd ${project_path}/../obj
 
 if [ ! -d "./tools/gcc-arm-none-eabi" ] ;then
-    # tar -jvxf ./tools/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 -C ./tools
-    # mv ./tools/gcc-arm-none-eabi-7-2018-q2-update ./tools/gcc-arm-none-eabi
-    tar -jvxf ./tools/gcc-arm-none-eabi-4_9-2015q3.tar.bz2 -C ./tools
-    mv ./tools/gcc-arm-none-eabi-4_9-2015q3 ./tools/gcc-arm-none-eabi
+    tar -jvxf ./tools/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2 -C ./tools
+    mv ./tools/gcc-arm-none-eabi-7-2018-q2-update ./tools/gcc-arm-none-eabi
+    # tar -jvxf ./tools/gcc-arm-none-eabi-4_9-2015q3.tar.bz2 -C ./tools
+    # mv ./tools/gcc-arm-none-eabi-4_9-2015q3 ./tools/gcc-arm-none-eabi
 fi
 
 make clean
